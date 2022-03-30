@@ -11,7 +11,8 @@ class PlaceRepositoryImpl(
     private val dao: PlaceDao
 ) : PlaceRepository {
 
-    override fun getPlaceList(): LiveData<List<PlaceDto>> = Transformations.map(dao.getPlaceList()) {
-        it.map(::toDto)
-    }
+    override fun getPlaceList(): LiveData<List<PlaceDto>> =
+        Transformations.map(dao.getPlaceList()) {
+            it.map(::toDto)
+        }
 }

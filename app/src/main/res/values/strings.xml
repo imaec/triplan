@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">triplan</string>
+
+    <string name="bottom_nav_home">홈</string>
+    <string name="bottom_nav_search">검색</string>
+    <string name="bottom_nav_my_place">내 장소</string>
+    <string name="bottom_nav_setting">설정</string>
 </resources>
