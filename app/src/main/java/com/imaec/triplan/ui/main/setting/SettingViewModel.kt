@@ -1,31 +1,28 @@
 package com.imaec.triplan.ui.main.setting
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.imaec.domain.Result
-import com.imaec.domain.model.PlaceDto
-import com.imaec.domain.usecase.place.GetPlaceListUseCase
+import com.imaec.triplan.model.SettingButtonAction
+import com.imaec.triplan.model.SettingVo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(
-    private val getPlaceListUseCase: GetPlaceListUseCase
-) : ViewModel() {
+class SettingViewModel @Inject constructor() : ViewModel() {
 
-    private val _placeResult: MutableStateFlow<Result<List<PlaceDto>>> =
-        MutableStateFlow(Result.Init)
-    val placeResult = _placeResult.asStateFlow()
+    private val _settingList = MutableLiveData<List<SettingVo>>()
+    val settingList: LiveData<List<SettingVo>> get() = _settingList
 
-    init {
-        viewModelScope.launch {
-            getPlaceListUseCase().collect {
-                _placeResult.value = it
-            }
-        }
+    fun fetchData(version: String) {
+        _settingList.value = listOf(
+            SettingVo(title = "카테고리 관리", type = SettingButtonAction.PLACE_MANAGEMENT),
+            SettingVo(title = "지역 관리", type = SettingButtonAction.CITY_MANAGEMENT),
+            SettingVo(title = "앱 버전", version = version, type = SettingButtonAction.NONE),
+            SettingVo(title = "앱 공유하기", type = SettingButtonAction.SHARE)
+        )
+    }
+
+    fun onClickSettingButton(type: SettingButtonAction) {
     }
 }

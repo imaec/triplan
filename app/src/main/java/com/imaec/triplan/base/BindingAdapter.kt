@@ -2,6 +2,7 @@ package com.imaec.triplan.base
 
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import java.util.concurrent.atomic.AtomicBoolean
 
 @BindingAdapter("bindSingleClick")
@@ -29,5 +30,15 @@ class OnSingleClickListener(
                 clickListener.onClick(v)
             }
         }
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+@BindingAdapter("bindItemList")
+fun RecyclerView.bindItemList(itemList: List<Any>?) {
+    itemList ?: return
+
+    (adapter as? BaseListAdapter<Any>)?.run {
+        submitList(itemList)
     }
 }
