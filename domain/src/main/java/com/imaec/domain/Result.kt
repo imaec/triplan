@@ -26,15 +26,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
  */
 sealed class Result<out R> {
 
+    object Init : Result<Nothing>()
     data class Success<out T>(val data: T) : Result<T>()
     data class Error(val exception: Exception) : Result<Nothing>()
     object Loading : Result<Nothing>()
+    object Empty : Result<Nothing>()
 
     override fun toString(): String {
         return when (this) {
+            Init -> "Init"
             is Success<*> -> "Success[data=$data]"
             is Error -> "Error[exception=$exception]"
             Loading -> "Loading"
+            Empty -> "Empty"
         }
     }
 }

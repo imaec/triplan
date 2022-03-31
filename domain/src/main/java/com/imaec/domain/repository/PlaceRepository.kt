@@ -1,9 +1,10 @@
 package com.imaec.domain.repository
 
-import androidx.lifecycle.LiveData
+import com.imaec.domain.Result
 import com.imaec.domain.model.PlaceDto
+import kotlinx.coroutines.flow.Flow
 
 interface PlaceRepository {
 
-    fun getPlaceList(): LiveData<List<PlaceDto>>
+    fun getPlaceList(): Flow<Result<List<PlaceDto>>>
 }

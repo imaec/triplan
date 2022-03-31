@@ -23,7 +23,7 @@ import timber.log.Timber
 /**
  * Executes business logic synchronously or asynchronously using Coroutines.
  */
-abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
+abstract class ResultUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
     /** Executes the use case asynchronously and returns a [Result].
      *
@@ -55,7 +55,7 @@ abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispat
     protected abstract suspend fun execute(parameters: P): R
 }
 
-abstract class NoParamUseCase<R>(private val coroutineDispatcher: CoroutineDispatcher) {
+abstract class ResultNoParamUseCase<R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
     /** Executes the use case asynchronously and returns a [Result].
      *
@@ -78,6 +78,26 @@ abstract class NoParamUseCase<R>(private val coroutineDispatcher: CoroutineDispa
     /**
      * Override this to set the code to be executed.
      */
+    @Throws(RuntimeException::class)
+    protected abstract suspend fun execute(): R
+}
+
+abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
+
+    suspend operator fun invoke(parameters: P): R = withContext(coroutineDispatcher) {
+        execute(parameters)
+    }
+
+    @Throws(RuntimeException::class)
+    protected abstract suspend fun execute(parameters: P): R
+}
+
+abstract class NoParamUseCase<R>(private val coroutineDispatcher: CoroutineDispatcher) {
+
+    suspend operator fun invoke(): R = withContext(coroutineDispatcher) {
+        execute()
+    }
+
     @Throws(RuntimeException::class)
     protected abstract suspend fun execute(): R
 }
