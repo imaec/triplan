@@ -38,17 +38,17 @@ class CityManagementViewModel @Inject constructor(
         viewModelScope.launch {
             addAllCityUseCase(
                 listOf(
-                    CityDto(0, "서울", true),
-                    CityDto(1, "제주", true),
-                    CityDto(2, "가평·양평", true),
-                    CityDto(3, "강릉·속초", true),
-                    CityDto(4, "춘천·홍천", true),
-                    CityDto(5, "전주", true),
-                    CityDto(6, "경주", true),
-                    CityDto(7, "인청", true),
-                    CityDto(8, "여수", true),
-                    CityDto(9, "통영·거제·남해", true),
-                    CityDto(10, "포항·안동", true)
+                    CityDto(1, "서울", true),
+                    CityDto(2, "제주", true),
+                    CityDto(3, "가평·양평", true),
+                    CityDto(4, "강릉·속초", true),
+                    CityDto(5, "춘천·홍천", true),
+                    CityDto(6, "전주", true),
+                    CityDto(7, "경주", true),
+                    CityDto(8, "인청", true),
+                    CityDto(9, "여수", true),
+                    CityDto(10, "통영·거제·남해", true),
+                    CityDto(11, "포항·안동", true)
                 )
             )
             getCityListUseCase().collect { result ->
