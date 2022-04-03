@@ -11,10 +11,11 @@
 
         <variable
             name="item"
-            type="com.imaec.domain.model.CityDto" />
+            type="com.imaec.triplan.ui.city.CityManagementItem.City" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        bindSingleClick="@{() -> vm.onClickCity(item.city)}"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:paddingHorizontal="16dp">
@@ -23,7 +24,7 @@
             style="@style/Text16RegularGray33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.city}"
+            android:text="@{item.city.city}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,8 +32,8 @@
 
         <ImageView
             style="@style/Text14RegularGray66"
-            bindVisible="@{!item.defaultCity}"
-            bindSingleClick="@{() -> vm.onClickDelete(item.cityId)}"
+            bindVisible="@{!item.city.defaultCity}"
+            bindSingleClick="@{() -> vm.onClickDelete(item.city)}"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:padding="4dp"

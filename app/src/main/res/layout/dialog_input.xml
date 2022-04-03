@@ -40,7 +40,9 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
-                tools:hint="카테고리를 입력해주세요."/>
+                tools:hint="카테고리를 입력해주세요.">
+                <requestFocus/>
+            </EditText>
 
             <TextView
                 style="@style/Text16RegularGray33"

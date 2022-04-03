@@ -1,10 +1,13 @@
 package com.imaec.data.di
 
 import com.imaec.data.db.dao.CategoryDao
+import com.imaec.data.db.dao.CityDao
 import com.imaec.data.db.dao.PlaceDao
 import com.imaec.data.repository.CategoryRepositoryImpl
+import com.imaec.data.repository.CityRepositoryImpl
 import com.imaec.data.repository.PlaceRepositoryImpl
 import com.imaec.domain.repository.CategoryRepository
+import com.imaec.domain.repository.CityRepository
 import com.imaec.domain.repository.PlaceRepository
 import dagger.Module
 import dagger.Provides
@@ -20,6 +23,11 @@ object DataModule {
     @Singleton
     fun provideCategoryRepository(dao: CategoryDao): CategoryRepository =
         CategoryRepositoryImpl(dao)
+
+    @Provides
+    @Singleton
+    fun provideCityRepository(dao: CityDao): CityRepository =
+        CityRepositoryImpl(dao)
 
     @Provides
     @Singleton

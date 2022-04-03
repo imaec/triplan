@@ -25,6 +25,7 @@ class InputDialog(
         with(binding) {
             tvTitle.text = title
             etInput.setText(text)
+            etInput.setSelection(etInput.length())
             etInput.hint = hint
             tvCancel.setOnClickListener {
                 dismiss()

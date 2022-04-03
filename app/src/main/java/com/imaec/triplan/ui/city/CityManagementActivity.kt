@@ -4,13 +4,16 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.imaec.domain.model.CityDto
 import com.imaec.triplan.BR
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
-import com.imaec.triplan.base.BaseListAdapter
+import com.imaec.triplan.base.BaseMultiListAdapter
+import com.imaec.triplan.base.ViewHolderType
 import com.imaec.triplan.databinding.ActivityCityManagementBinding
+import com.imaec.triplan.ext.hideKeyboard
+import com.imaec.triplan.ext.toast
 import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
+import com.imaec.triplan.ui.common.input.InputDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +28,7 @@ class CityManagementActivity :
         setupBinding()
         setupRecyclerView()
         setupListener()
+        setupObserver()
     }
 
     private fun setupBinding() {
@@ -33,11 +37,34 @@ class CityManagementActivity :
 
     private fun setupRecyclerView() {
         with(binding.rvCity) {
-            val diffUtil = object : DiffUtil.ItemCallback<CityDto>() {
-                override fun areItemsTheSame(oldItem: CityDto, newItem: CityDto): Boolean =
-                    oldItem.cityId == newItem.cityId
+            val viewHolderMapper: (CityManagementItem) -> ViewHolderType = {
+                when (it) {
+                    CityManagementItem.CityInput -> {
+                        CityManagementHolderType.InputHolder
+                    }
+                    is CityManagementItem.City -> {
+                        CityManagementHolderType.CityHolder
+                    }
+                }
+            }
 
-                override fun areContentsTheSame(oldItem: CityDto, newItem: CityDto): Boolean =
+            val diffUtil = object : DiffUtil.ItemCallback<CityManagementItem>() {
+                override fun areItemsTheSame(
+                    oldItem: CityManagementItem,
+                    newItem: CityManagementItem
+                ): Boolean =
+                    if (oldItem is CityManagementItem.City &&
+                        newItem is CityManagementItem.City
+                    ) {
+                        oldItem.city.cityId == newItem.city.cityId
+                    } else {
+                        oldItem == newItem
+                    }
+
+                override fun areContentsTheSame(
+                    oldItem: CityManagementItem,
+                    newItem: CityManagementItem
+                ): Boolean =
                     oldItem == newItem
             }
 
@@ -46,11 +73,11 @@ class CityManagementActivity :
                 animator.supportsChangeAnimations = false
             }
 
-            addItemDecoration(RecyclerViewDividerDecoration())
+            addItemDecoration(RecyclerViewDividerDecoration(startPosition = 1))
 
-            adapter = BaseListAdapter(
-                layoutResId = R.layout.item_city_management,
-                bindingItemId = BR.item,
+            adapter = BaseMultiListAdapter(
+                viewHolderMapper = viewHolderMapper,
+                viewHolderType = CityManagementHolderType::class,
                 viewModel = mapOf(BR.vm to viewModel),
                 diffUtil = diffUtil
             )
@@ -63,5 +90,41 @@ class CityManagementActivity :
                 finish()
             }
         }
+    }
+
+    private fun setupObserver() {
+        with(viewModel.state) {
+            observe(this@CityManagementActivity) {
+                when (it) {
+                    is CityManagementState.OnError -> toast(it.message)
+                    CityManagementState.OnClickAdd -> hideKeyboard(binding.root)
+                    is CityManagementState.OnClickCity -> {
+                        InputDialog(
+                            context = this@CityManagementActivity,
+                            title = "지역 수정",
+                            hint = "지역을 입력하세요.",
+                            text = it.city.city,
+                            okCallback = { city ->
+                                viewModel.updateCity(it.city.cityId, city)
+                            }
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
+    enum class CityManagementHolderType(
+        override val layoutResId: Int,
+        override val bindingItemId: Int
+    ) : ViewHolderType {
+        InputHolder(
+            layoutResId = R.layout.item_city_input,
+            bindingItemId = BR._all
+        ),
+        CityHolder(
+            layoutResId = R.layout.item_city_management,
+            bindingItemId = BR.item
+        )
     }
 }
