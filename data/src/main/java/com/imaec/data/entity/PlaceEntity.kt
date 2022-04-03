@@ -2,12 +2,32 @@ package com.imaec.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import com.imaec.domain.model.PlaceDto
 
-@Entity(tableName = "placeEntity")
+@Entity(
+    tableName = "placeEntity",
+    foreignKeys = [
+        ForeignKey(
+            entity = CategoryEntity::class,
+            parentColumns = ["categoryId"],
+            childColumns = ["categoryId"],
+            onUpdate = CASCADE
+        ),
+        ForeignKey(
+            entity = CityEntity::class,
+            parentColumns = ["cityId"],
+            childColumns = ["cityId"],
+            onUpdate = CASCADE
+        ),
+    ]
+)
 data class PlaceEntity(
     @PrimaryKey(autoGenerate = true) val placeId: Long = 0,
+    @ColumnInfo val categoryId: Long,
+    @ColumnInfo val cityId: Long,
     @ColumnInfo val placeName: String,
     @ColumnInfo val address: String = "",
     @ColumnInfo val siteUrl: String = "",
@@ -17,6 +37,8 @@ data class PlaceEntity(
     companion object {
         fun toDto(entity: PlaceEntity) = PlaceDto(
             placeId = entity.placeId,
+            categoryId = entity.categoryId,
+            cityId = entity.cityId,
             placeName = entity.placeName,
             address = entity.address,
             siteUrl = entity.siteUrl,
