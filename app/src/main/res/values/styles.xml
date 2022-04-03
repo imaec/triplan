@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Text20BoldBlack">
-        <item name="android:textStyle">bold</item>
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Text16RegularGray33">
@@ -20,5 +20,11 @@
     <style name="Text14RegularGray66">
         <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/gray66</item>
+    </style>
+
+    <style name="Text14BoldGray33">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/gray33</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>
