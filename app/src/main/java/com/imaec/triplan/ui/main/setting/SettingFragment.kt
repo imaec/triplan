@@ -3,6 +3,7 @@ package com.imaec.triplan.ui.main.setting
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.imaec.triplan.BR
@@ -11,9 +12,13 @@ import com.imaec.triplan.base.BaseFragment
 import com.imaec.triplan.base.BaseListAdapter
 import com.imaec.triplan.databinding.FragmentSettingBinding
 import com.imaec.triplan.ext.getVersion
+import com.imaec.triplan.ext.startActivity
 import com.imaec.triplan.model.SettingVo
+import com.imaec.triplan.ui.category.CategoryManagementActivity
 import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
@@ -26,6 +31,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
         setupBinding()
         setupRecyclerView()
         setupData()
+        setupCollect()
     }
 
     private fun setupBinding() {
@@ -60,5 +66,22 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
 
     private fun setupData() {
         viewModel.fetchData(getVersion())
+    }
+
+    private fun setupCollect() {
+        lifecycleScope.launch {
+            viewModel.event.collect {
+                when (it) {
+                    SettingEvent.OnClickPlaceManagement -> {
+                        startActivity<CategoryManagementActivity>()
+                    }
+                    SettingEvent.OnClickCityManagement -> {
+                    }
+                    SettingEvent.OnClickShare -> {
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 }

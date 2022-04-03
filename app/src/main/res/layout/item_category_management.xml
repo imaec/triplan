@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.category.CategoryManagementViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.triplan.model.CategoryVo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            style="@style/Text16RegularGray33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.category}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="음식점"/>
+
+        <ImageView
+            style="@style/Text14RegularGray66"
+            bindSingleClick="@{() -> vm.onClickDelete(item.categoryId)}"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_close"
+            app:tint="@color/gray33"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
