@@ -27,4 +27,9 @@
         <item name="android:textColor">@color/gray33</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="Text12RegularGray33">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/gray33</item>
+    </style>
 </resources>
