@@ -5,6 +5,11 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import java.util.concurrent.atomic.AtomicBoolean
 
+@BindingAdapter("bindVisible")
+fun View.bindVisible(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
 @BindingAdapter("bindSingleClick")
 fun View.bindSingleClick(clickListener: View.OnClickListener?) {
     clickListener?.also {

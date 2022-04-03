@@ -23,5 +23,6 @@
         </activity>
 
         <activity android:name=".ui.category.CategoryManagementActivity"/>
+        <activity android:name=".ui.city.CityManagementActivity"/>
     </application>
 </manifest>

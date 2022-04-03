@@ -15,6 +15,7 @@ import com.imaec.triplan.ext.getVersion
 import com.imaec.triplan.ext.startActivity
 import com.imaec.triplan.model.SettingVo
 import com.imaec.triplan.ui.category.CategoryManagementActivity
+import com.imaec.triplan.ui.city.CityManagementActivity
 import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -76,6 +77,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
                         startActivity<CategoryManagementActivity>()
                     }
                     SettingEvent.OnClickCityManagement -> {
+                        startActivity<CityManagementActivity>()
                     }
                     SettingEvent.OnClickShare -> {
                     }
