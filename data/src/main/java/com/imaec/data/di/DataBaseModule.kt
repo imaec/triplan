@@ -2,6 +2,7 @@ package com.imaec.data.di
 
 import android.content.Context
 import com.imaec.data.db.AppDatabase
+import com.imaec.data.db.dao.CategoryDao
 import com.imaec.data.db.dao.PlaceDao
 import dagger.Module
 import dagger.Provides
@@ -19,6 +20,12 @@ object DataBaseModule {
     fun provideAppDataBase(
         @ApplicationContext context: Context
     ): AppDatabase = AppDatabase.buildDatabase(context)
+
+    @Singleton
+    @Provides
+    fun provideCategoryDao(
+        database: AppDatabase
+    ): CategoryDao = database.categoryDao()
 
     @Singleton
     @Provides

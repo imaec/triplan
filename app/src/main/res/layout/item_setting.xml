@@ -11,7 +11,7 @@
 
         <variable
             name="item"
-            type="com.imaec.triplan.model.SettingVo" />
+            type="com.imaec.domain.model.SettingDto" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

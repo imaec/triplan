@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 
 inline fun <reified T : Activity> Context.startActivity(
@@ -40,4 +42,29 @@ fun Context.getVersion(): String {
         return version
     }
     return version
+}
+
+fun Context.showKeyboard(view: View, delay: Long = 100) {
+    view.postDelayed(
+        {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
+                view,
+                0
+            )
+        },
+        delay
+    )
+}
+
+fun Context.hideKeyboard(view: View, delay: Long = 100) {
+    view.postDelayed(
+        {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(
+                    view.windowToken,
+                    0
+                )
+        },
+        delay
+    )
 }

@@ -1,6 +1,6 @@
-package com.imaec.triplan.model
+package com.imaec.domain.model
 
-data class SettingVo(
+data class SettingDto(
     val title: String,
     val version: String = "",
     val type: SettingButtonAction

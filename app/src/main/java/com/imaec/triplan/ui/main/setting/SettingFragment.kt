@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.imaec.domain.model.SettingDto
 import com.imaec.triplan.BR
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseFragment
@@ -13,7 +14,6 @@ import com.imaec.triplan.base.BaseListAdapter
 import com.imaec.triplan.databinding.FragmentSettingBinding
 import com.imaec.triplan.ext.getVersion
 import com.imaec.triplan.ext.startActivity
-import com.imaec.triplan.model.SettingVo
 import com.imaec.triplan.ui.category.CategoryManagementActivity
 import com.imaec.triplan.ui.city.CityManagementActivity
 import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
@@ -41,11 +41,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
 
     private fun setupRecyclerView() {
         with(binding.rvSetting) {
-            val diffUtil = object : DiffUtil.ItemCallback<SettingVo>() {
-                override fun areItemsTheSame(oldItem: SettingVo, newItem: SettingVo): Boolean =
+            val diffUtil = object : DiffUtil.ItemCallback<SettingDto>() {
+                override fun areItemsTheSame(oldItem: SettingDto, newItem: SettingDto): Boolean =
                     oldItem.title == newItem.title
 
-                override fun areContentsTheSame(oldItem: SettingVo, newItem: SettingVo): Boolean =
+                override fun areContentsTheSame(oldItem: SettingDto, newItem: SettingDto): Boolean =
                     oldItem == newItem
             }
 

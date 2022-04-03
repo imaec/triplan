@@ -2,6 +2,7 @@ package com.imaec.triplan.ext
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 
 inline fun <reified T : Activity> Fragment.startActivity(
@@ -24,3 +25,11 @@ fun Fragment.toast(strRes: Int) {
 }
 
 fun Fragment.getVersion(): String = requireContext().getVersion()
+
+fun Fragment.showKeyboard(view: View, delay: Long = 100) {
+    requireContext().showKeyboard(view, delay)
+}
+
+fun Fragment.hideKeyboard(view: View, delay: Long = 100) {
+    requireContext().hideKeyboard(view, delay)
+}

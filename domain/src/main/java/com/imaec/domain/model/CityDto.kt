@@ -1,6 +1,6 @@
-package com.imaec.triplan.model
+package com.imaec.domain.model
 
-data class CityVo(
+data class CityDto(
     val cityId: Long,
     val city: String,
     val defaultCity: Boolean = false

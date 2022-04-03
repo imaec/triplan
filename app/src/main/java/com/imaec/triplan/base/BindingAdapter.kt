@@ -3,6 +3,7 @@ package com.imaec.triplan.base
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.imaec.domain.Result
 import java.util.concurrent.atomic.AtomicBoolean
 
 @BindingAdapter("bindVisible")
@@ -45,5 +46,19 @@ fun RecyclerView.bindItemList(itemList: List<Any>?) {
 
     (adapter as? BaseListAdapter<Any>)?.run {
         submitList(itemList)
+    }
+
+    (adapter as? BaseMultiListAdapter<Any>)?.run {
+        submitList(itemList)
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+@BindingAdapter("bindItemList")
+fun RecyclerView.bindItemList(itemResult: Result<*>) {
+    if (itemResult is Result.Success) {
+        (adapter as? BaseListAdapter<Any>)?.run {
+            submitList(itemResult.data as List<Any>)
+        }
     }
 }

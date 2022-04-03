@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.imaec.domain.model.CityDto
 import com.imaec.triplan.BR
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.base.BaseListAdapter
 import com.imaec.triplan.databinding.ActivityCityManagementBinding
-import com.imaec.triplan.model.CityVo
 import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,12 +32,12 @@ class CityManagementActivity :
     }
 
     private fun setupRecyclerView() {
-        with(binding.rvSetting) {
-            val diffUtil = object : DiffUtil.ItemCallback<CityVo>() {
-                override fun areItemsTheSame(oldItem: CityVo, newItem: CityVo): Boolean =
+        with(binding.rvCity) {
+            val diffUtil = object : DiffUtil.ItemCallback<CityDto>() {
+                override fun areItemsTheSame(oldItem: CityDto, newItem: CityDto): Boolean =
                     oldItem.cityId == newItem.cityId
 
-                override fun areContentsTheSame(oldItem: CityVo, newItem: CityVo): Boolean =
+                override fun areContentsTheSame(oldItem: CityDto, newItem: CityDto): Boolean =
                     oldItem == newItem
             }
 
@@ -58,19 +58,9 @@ class CityManagementActivity :
     }
 
     private fun setupListener() {
-        with(binding.mtbCategoryManagement) {
+        with(binding.mtbCityManagement) {
             setNavigationOnClickListener {
                 finish()
-            }
-
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.menu_add -> {
-                        // TODO 지역 추가
-                        true
-                    }
-                    else -> false
-                }
             }
         }
     }
