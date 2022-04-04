@@ -28,7 +28,8 @@
         <activity android:name=".ui.city.CityManagementActivity"/>
         <activity android:name=".ui.writeplace.WritePlaceActivity"
             android:windowSoftInputMode="adjustResize"/>
-
-        <activity android:name=".ui.searchaddress.SearchAddressActivity"/>
+        <activity android:name=".ui.writeplace.category.SelectCategoryActivity"/>
+        <activity android:name=".ui.writeplace.city.SelectCityActivity"/>
+        <activity android:name=".ui.writeplace.searchaddress.SearchAddressActivity"/>
     </application>
 </manifest>

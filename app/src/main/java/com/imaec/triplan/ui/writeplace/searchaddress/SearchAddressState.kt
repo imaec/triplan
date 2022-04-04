@@ -1,4 +1,4 @@
-package com.imaec.triplan.ui.searchaddress
+package com.imaec.triplan.ui.writeplace.searchaddress
 
 sealed class SearchAddressState {
 

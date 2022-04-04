@@ -1,4 +1,4 @@
-package com.imaec.triplan.ui.searchaddress
+package com.imaec.triplan.ui.writeplace.searchaddress
 
 import android.content.Intent
 import android.os.Bundle
