@@ -17,6 +17,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Text14RegularGray33">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/gray33</item>
+    </style>
+
     <style name="Text14RegularGray66">
         <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/gray66</item>
@@ -31,5 +36,10 @@
     <style name="Text12RegularGray33">
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/gray33</item>
+    </style>
+
+    <style name="Text11RegularGray66">
+        <item name="android:textSize">11dp</item>
+        <item name="android:textColor">@color/gray66</item>
     </style>
 </resources>

@@ -18,11 +18,11 @@
         bindSingleClick="@{() -> vm.onClickAddress(item.address)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
+        android:paddingVertical="16dp"
         android:paddingHorizontal="16dp">
 
         <TextView
-            style="@style/Text12RegularGray33"
+            style="@style/Text14RegularGray33"
             android:id="@+id/tv_jibun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,13 +32,30 @@
             tools:text="서울특별시 노원구 공릉동 230-19"/>
 
         <TextView
-            style="@style/Text12RegularGray33"
-            android:id="@+id/tv_road"
+            style="@style/Text11RegularGray66"
+            android:id="@+id/tv_road_title"
+            bindVisible="@{!item.address.roadAddr.empty}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_sr_white_graycc_all10"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="도로명"
+            app:layout_constraintStart_toStartOf="@id/tv_jibun"
+            app:layout_constraintTop_toBottomOf="@id/tv_jibun" />
+
+        <TextView
+            style="@style/Text11RegularGray66"
+            android:id="@+id/tv_road"
+            bindVisible="@{!item.address.roadAddr.empty}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@{item.address.roadAddr}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_jibun"
+            app:layout_constraintStart_toEndOf="@id/tv_road_title"
+            app:layout_constraintTop_toTopOf="@id/tv_road_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_road_title"
             tools:text="서울특별시 노원구 공릉동 230-19"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
