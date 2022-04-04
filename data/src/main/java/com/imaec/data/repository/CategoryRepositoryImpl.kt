@@ -17,8 +17,13 @@ class CategoryRepositoryImpl(
     private val dao: CategoryDao
 ) : CategoryRepository {
 
-    override suspend fun addCategory(category: String) {
-        if (dao.getCountByCategory(category) == 0) dao.insert(CategoryEntity(category = category))
+    override suspend fun addCategory(category: String): CategoryDto? {
+        if (dao.getCountByCategory(category) == 0) {
+            val entity = CategoryEntity(category = category)
+            val result = dao.insert(entity)
+            return toDto(entity.copy(categoryId = result))
+        }
+        return null
     }
 
     override fun getCategoryList() = flow {

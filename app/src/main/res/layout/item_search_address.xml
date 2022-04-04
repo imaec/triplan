@@ -7,11 +7,11 @@
 
         <variable
             name="vm"
-            type="com.imaec.triplan.ui.searchaddress.SearchAddressViewModel" />
+            type="com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressViewModel" />
 
         <variable
             name="item"
-            type="com.imaec.triplan.ui.searchaddress.SearchAddressItem.Address" />
+            type="com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressItem.Address" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

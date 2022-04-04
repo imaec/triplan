@@ -9,6 +9,7 @@ import com.imaec.domain.model.CityDto
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.databinding.ActivityWritePlaceBinding
+import com.imaec.triplan.ui.common.input.InputDialog
 import com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressActivity
 import com.imaec.triplan.ui.writeplace.category.SelectCategoryActivity
 import com.imaec.triplan.ui.writeplace.city.SelectCityActivity
@@ -56,6 +57,14 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                     }
                     WritePlaceState.OnClickAddCategory -> {
                         // TODO 카테고리 추가 다이얼로그
+                        InputDialog(
+                            context = this@WritePlaceActivity,
+                            title = "카테고리 추가",
+                            hint = "카테고리를 입력하세요.",
+                            okCallback = { city ->
+                                viewModel.saveCategory(city)
+                            }
+                        ).show()
                     }
                     WritePlaceState.OnClickCity -> {
                         startActivityForResult(
@@ -69,6 +78,14 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                     }
                     WritePlaceState.OnClickAddCity -> {
                         // TODO 지역 추가 다이얼로그
+                        InputDialog(
+                            context = this@WritePlaceActivity,
+                            title = "지역 추가",
+                            hint = "지역을 입력하세요.",
+                            okCallback = { city ->
+                                viewModel.saveCity(city)
+                            }
+                        ).show()
                     }
                     WritePlaceState.OnClickAddress -> {
                         startActivityForResult(

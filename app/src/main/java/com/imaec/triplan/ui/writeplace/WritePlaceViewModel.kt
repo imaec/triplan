@@ -3,13 +3,20 @@ package com.imaec.triplan.ui.writeplace
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.imaec.domain.model.CategoryDto
 import com.imaec.domain.model.CityDto
+import com.imaec.domain.usecase.category.AddCategoryUseCase
+import com.imaec.domain.usecase.city.AddCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WritePlaceViewModel @Inject constructor() : ViewModel() {
+class WritePlaceViewModel @Inject constructor(
+    private val addCategoryUseCase: AddCategoryUseCase,
+    private val addCityUseCase: AddCityUseCase
+) : ViewModel() {
 
     private val _state = MutableLiveData<WritePlaceState>()
     val state: LiveData<WritePlaceState> get() = _state
@@ -33,6 +40,22 @@ class WritePlaceViewModel @Inject constructor() : ViewModel() {
 
     fun setAddress(address: String) {
         _address.value = address
+    }
+
+    fun saveCategory(category: String) {
+        viewModelScope.launch {
+            addCategoryUseCase(category)?.let {
+                _category.value = it
+            }
+        }
+    }
+
+    fun saveCity(city: String) {
+        viewModelScope.launch {
+            addCityUseCase(city)?.let {
+                _city.value = it
+            }
+        }
     }
 
     fun onClickCategory() {

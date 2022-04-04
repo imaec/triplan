@@ -18,8 +18,13 @@ class CityRepositoryImpl(
     private val dao: CityDao
 ) : CityRepository {
 
-    override suspend fun addCity(city: String) {
-        if (dao.getCountByCity(city) == 0) dao.insert(CityEntity(city = city))
+    override suspend fun addCity(city: String): CityDto? {
+        if (dao.getCountByCity(city) == 0) {
+            val entity = CityEntity(city = city)
+            val result = dao.insert(entity)
+            return toDto(entity.copy(cityId = result))
+        }
+        return null
     }
 
     override suspend fun addAllCity(cityList: List<CityDto>) {
