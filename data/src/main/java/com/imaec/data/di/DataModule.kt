@@ -1,14 +1,20 @@
 package com.imaec.data.di
 
+import com.imaec.data.api.NaverService
+import com.imaec.data.api.RoadAddressService
 import com.imaec.data.db.dao.CategoryDao
 import com.imaec.data.db.dao.CityDao
 import com.imaec.data.db.dao.PlaceDao
 import com.imaec.data.repository.CategoryRepositoryImpl
 import com.imaec.data.repository.CityRepositoryImpl
+import com.imaec.data.repository.NaverRepositoryImpl
 import com.imaec.data.repository.PlaceRepositoryImpl
+import com.imaec.data.repository.RoadAddressRepositoryImpl
 import com.imaec.domain.repository.CategoryRepository
 import com.imaec.domain.repository.CityRepository
+import com.imaec.domain.repository.NaverRepository
 import com.imaec.domain.repository.PlaceRepository
+import com.imaec.domain.repository.RoadAddressRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,4 +38,14 @@ object DataModule {
     @Provides
     @Singleton
     fun providePlaceRepository(dao: PlaceDao): PlaceRepository = PlaceRepositoryImpl(dao)
+
+    @Provides
+    @Singleton
+    fun provideNaverRepository(service: NaverService): NaverRepository =
+        NaverRepositoryImpl(service)
+
+    @Provides
+    @Singleton
+    fun provideRoadAddressRepository(service: RoadAddressService): RoadAddressRepository =
+        RoadAddressRepositoryImpl(service)
 }

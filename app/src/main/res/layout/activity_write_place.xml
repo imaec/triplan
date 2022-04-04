@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -143,21 +144,21 @@
                     android:text="주소"
                     app:layout_constraintTop_toBottomOf="@id/et_place"/>
 
-                <EditText
+                <TextView
                     style="@style/Text14RegularGray66"
                     android:id="@+id/et_address"
+                    bindSingleClick="@{() -> vm.onClickAddress()}"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:background="@drawable/bg_sr_white_graycc_all4"
-                    android:hint="주소를 입력해주세요."
-                    android:singleLine="true"
-                    android:imeOptions="actionDone"
+                    android:text="@{vm.address}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_address"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_address"
+                    tools:text="주소를 입력해주세요."/>
 
                 <TextView
                     style="@style/Text14BoldGray33"

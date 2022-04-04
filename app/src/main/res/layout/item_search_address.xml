@@ -8,9 +8,14 @@
         <variable
             name="vm"
             type="com.imaec.triplan.ui.searchaddress.SearchAddressViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.triplan.ui.searchaddress.SearchAddressItem.Address" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        bindSingleClick="@{() -> vm.onClickAddress(item.address)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
@@ -21,6 +26,7 @@
             android:id="@+id/tv_jibun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{item.address.jibunAddr}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="서울특별시 노원구 공릉동 230-19"/>
@@ -30,6 +36,7 @@
             android:id="@+id/tv_road"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{item.address.roadAddr}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_jibun"
             tools:text="서울특별시 노원구 공릉동 230-19"/>

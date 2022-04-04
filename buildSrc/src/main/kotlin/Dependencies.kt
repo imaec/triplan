@@ -27,6 +27,11 @@ object Versions {
 
     const val coroutine = "1.5.2"
 
+    const val retrofit = "2.9.0"
+    const val okhttp3 = "4.9.1"
+    const val gson = "2.8.7"
+    const val jackson_kotlin_module = "2.13.2"
+
     const val room = "2.4.1"
 
     const val junit = "4.13.1"
@@ -62,6 +67,13 @@ object Libs {
     const val dagger_hilt_compiler = "com.google.dagger:hilt-android-compiler:${Versions.dagger_hilt}"
     const val hilt_common = "androidx.hilt:hilt-common:${Versions.hilt}"
     const val hilt_compiler = "androidx.hilt:hilt-compiler:${Versions.hilt}"
+    // Retrofit
+    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+    const val retrofit_converter = "com.squareup.retrofit2:converter-jackson:${Versions.retrofit}"
+    const val okhttp3 = "com.squareup.okhttp3:okhttp:${Versions.okhttp3}"
+    const val okhttp3_interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp3}"
+    const val jackson_kotlin_module = "com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson_kotlin_module}"
+    const val gson = "com.google.code.gson:gson:${Versions.gson}"
     // Room
     const val room_runtime = "androidx.room:room-runtime:${Versions.room}"
     const val room_ktx = "androidx.room:room-ktx:${Versions.room}"

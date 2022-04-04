@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.imaec.triplan">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".TriPlanApplication"
         android:allowBackup="true"
@@ -26,5 +28,7 @@
         <activity android:name=".ui.city.CityManagementActivity"/>
         <activity android:name=".ui.writeplace.WritePlaceActivity"
             android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".ui.searchaddress.SearchAddressActivity"/>
     </application>
 </manifest>
