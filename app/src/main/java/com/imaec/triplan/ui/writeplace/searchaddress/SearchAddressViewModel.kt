@@ -4,11 +4,13 @@ import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.Result
 import com.imaec.domain.model.RoadAddressDto
 import com.imaec.domain.usecase.address.GetAddressUseCase
+import com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressActivity.Companion.ADDRESS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -16,6 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchAddressViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getAddressUseCase: GetAddressUseCase
 ) : ViewModel() {
 
@@ -25,7 +28,7 @@ class SearchAddressViewModel @Inject constructor(
     private val _searchAddressList = MutableLiveData<List<SearchAddressItem>>()
     val searchAddressList: LiveData<List<SearchAddressItem>> get() = _searchAddressList
 
-    val address = ObservableField("")
+    val address = ObservableField(savedStateHandle.get<String>(ADDRESS))
 
     init {
         _searchAddressList.value = listOf(SearchAddressItem.SearchInput)
@@ -37,6 +40,8 @@ class SearchAddressViewModel @Inject constructor(
                 }
             }
         )
+
+        if (address.get()?.length ?: 0 > 1) searchAddress(address.get() ?: "")
     }
 
     private fun searchAddress(keyword: String) {

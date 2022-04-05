@@ -9,8 +9,19 @@ import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
 import com.imaec.data.BuildConfig
 import com.imaec.data.api.Host
+import com.imaec.data.api.KEY_ACCEPT
+import com.imaec.data.api.KEY_API_KEY
+import com.imaec.data.api.KEY_API_KEY_ID
+import com.imaec.data.api.KEY_CLIENT_ID
+import com.imaec.data.api.KEY_CLIENT_SECRET
+import com.imaec.data.api.NaverLocalService
 import com.imaec.data.api.NaverService
 import com.imaec.data.api.RoadAddressService
+import com.imaec.data.api.VALUE_ACCEPT
+import com.imaec.data.api.VALUE_API_KEY
+import com.imaec.data.api.VALUE_API_KEY_ID
+import com.imaec.data.api.VALUE_CLIENT_ID
+import com.imaec.data.api.VALUE_CLIENT_SECRET
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +41,7 @@ import javax.inject.Singleton
 object NetworkCoreModule {
 
     const val HOST_NAVER = "naverHost"
+    const val HOST_NAVER_LOCAL = "naverLocalHost"
     const val HOST_JUSO = "jusoHost"
 
     @Provides
@@ -80,18 +92,53 @@ object NetworkCoreModule {
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
+            .addNetworkInterceptor(httpLoggingInterceptor)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+        return okHttpClient.build()
+    }
+
+    @Provides
+    @Singleton
+    @Named(HOST_NAVER)
+    fun provideNaverOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(
                 Interceptor { chain ->
                     val requestBuilder =
                         chain
                             .request()
                             .newBuilder()
-                            .addHeader("X-NCP-APIGW-API-KEY-ID", "b83gl83l1i")
-                            .addHeader(
-                                "X-NCP-APIGW-API-KEY",
-                                "XmRrqR0HLtBQj4S4FFKjOtpQrkQi5HtFalVc4dXt"
-                            )
-                            .addHeader("Accept", "application/json")
+                            .addHeader(KEY_API_KEY_ID, VALUE_API_KEY_ID)
+                            .addHeader(KEY_API_KEY, VALUE_API_KEY)
+                            .addHeader(KEY_ACCEPT, VALUE_ACCEPT)
+
+                    chain.proceed(requestBuilder.build())
+                }
+            )
+            .addNetworkInterceptor(httpLoggingInterceptor)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+        return okHttpClient.build()
+    }
+
+    @Provides
+    @Singleton
+    @Named(HOST_NAVER_LOCAL)
+    fun provideNaverLocalOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(
+                Interceptor { chain ->
+                    val requestBuilder =
+                        chain
+                            .request()
+                            .newBuilder()
+                            .addHeader(KEY_CLIENT_ID, VALUE_CLIENT_ID)
+                            .addHeader(KEY_CLIENT_SECRET, VALUE_CLIENT_SECRET)
 
                     chain.proceed(requestBuilder.build())
                 }
@@ -107,7 +154,7 @@ object NetworkCoreModule {
     @Named(HOST_NAVER)
     fun provideNaverRetrofitBuilder(
         jacksonConverterFactory: JacksonConverterFactory,
-        okHttpClient: OkHttpClient
+        @Named(HOST_NAVER) okHttpClient: OkHttpClient
     ): Retrofit.Builder = Retrofit
         .Builder()
         .baseUrl(Host.NAVER)
@@ -119,6 +166,24 @@ object NetworkCoreModule {
     fun provideNaverService(
         @Named(HOST_NAVER) retrofitBuilder: Retrofit.Builder
     ): NaverService = retrofitBuilder.build().create(NaverService::class.java)
+
+    @Provides
+    @Singleton
+    @Named(HOST_NAVER_LOCAL)
+    fun provideNaverLocalRetrofitBuilder(
+        jacksonConverterFactory: JacksonConverterFactory,
+        @Named(HOST_NAVER_LOCAL) okHttpClient: OkHttpClient
+    ): Retrofit.Builder = Retrofit
+        .Builder()
+        .baseUrl(Host.NAVER_LOCAL)
+        .client(okHttpClient)
+        .addConverterFactory(jacksonConverterFactory)
+
+    @Provides
+    @Singleton
+    fun provideNaverLocalService(
+        @Named(HOST_NAVER_LOCAL) retrofitBuilder: Retrofit.Builder
+    ): NaverLocalService = retrofitBuilder.build().create(NaverLocalService::class.java)
 
     @Provides
     @Singleton

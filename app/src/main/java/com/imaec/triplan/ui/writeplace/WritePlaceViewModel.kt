@@ -1,21 +1,27 @@
 package com.imaec.triplan.ui.writeplace
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.imaec.domain.Result
 import com.imaec.domain.model.CategoryDto
 import com.imaec.domain.model.CityDto
+import com.imaec.domain.model.NaverPlaceDto
 import com.imaec.domain.usecase.category.AddCategoryUseCase
 import com.imaec.domain.usecase.city.AddCityUseCase
+import com.imaec.domain.usecase.place.GetNaverPlaceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WritePlaceViewModel @Inject constructor(
     private val addCategoryUseCase: AddCategoryUseCase,
-    private val addCityUseCase: AddCityUseCase
+    private val addCityUseCase: AddCityUseCase,
+    private val getNaverPlaceUseCase: GetNaverPlaceUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<WritePlaceState>()
@@ -30,6 +36,11 @@ class WritePlaceViewModel @Inject constructor(
     private val _address = MutableLiveData("주소를 입력해주세요.")
     val address: LiveData<String> get() = _address
 
+    private val _site = MutableLiveData<String>()
+    val site: LiveData<String> get() = _site
+
+    val placeName = ObservableField("")
+
     fun setCategory(category: CategoryDto) {
         _category.value = category
     }
@@ -38,8 +49,27 @@ class WritePlaceViewModel @Inject constructor(
         _city.value = city
     }
 
+    fun getAddressNotDefault() = address.value?.let {
+        if (it == "주소를 입력해주세요.") {
+            ""
+        } else {
+            it
+        }
+    } ?: run {
+        ""
+    }
+
     fun setAddress(address: String) {
         _address.value = address
+    }
+
+    fun setPlace(naverPlace: NaverPlaceDto) {
+        placeName.set(naverPlace.title)
+        val address = naverPlace.address ?: naverPlace.roadAddress ?: ""
+        if (address.isNotBlank()) {
+            _address.value = address
+        }
+        _site.value = naverPlace.link
     }
 
     fun saveCategory(category: String) {
@@ -75,6 +105,22 @@ class WritePlaceViewModel @Inject constructor(
     }
 
     fun onClickSearchPlace() {
+        val keyword = placeName.get() ?: ""
+        if (keyword.length <= 1) {
+            _state.value = WritePlaceState.OnError("검색 할 장소를 2글자 이상 입력해주세요.")
+            return
+        }
+
+        viewModelScope.launch {
+            getNaverPlaceUseCase(keyword).collect {
+                when (it) {
+                    is Result.Success -> {
+                        _state.value = WritePlaceState.OnLoadNaverPlace(it.data)
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
     fun onClickAddress() {

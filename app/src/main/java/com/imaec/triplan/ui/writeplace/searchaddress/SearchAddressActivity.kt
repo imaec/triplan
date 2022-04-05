@@ -3,6 +3,7 @@ package com.imaec.triplan.ui.writeplace.searchaddress
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.imaec.triplan.BR
@@ -127,5 +128,11 @@ class SearchAddressActivity :
     companion object {
         const val SEARCH_ADDRESS = "search_address"
         const val ADDRESS = "address"
+
+        fun createBundle(
+            address: String
+        ): Bundle = bundleOf(
+            ADDRESS to address
+        )
     }
 }

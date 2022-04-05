@@ -1,6 +1,8 @@
 package com.imaec.triplan.base
 
 import android.view.View
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.imaec.domain.Result
@@ -37,6 +39,11 @@ class OnSingleClickListener(
             }
         }
     }
+}
+
+@BindingAdapter("bindHtmlText")
+fun TextView.bindHtmlText(str: String) {
+    text = HtmlCompat.fromHtml(str, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
 
 @Suppress("UNCHECKED_CAST")

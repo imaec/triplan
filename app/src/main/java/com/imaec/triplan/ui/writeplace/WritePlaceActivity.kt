@@ -4,15 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
+import androidx.core.text.HtmlCompat
 import com.imaec.domain.model.CategoryDto
 import com.imaec.domain.model.CityDto
+import com.imaec.domain.model.NaverPlaceDto
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.databinding.ActivityWritePlaceBinding
+import com.imaec.triplan.ext.toast
+import com.imaec.triplan.ui.common.CommonBottomListener
 import com.imaec.triplan.ui.common.input.InputDialog
 import com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressActivity
 import com.imaec.triplan.ui.writeplace.category.SelectCategoryActivity
 import com.imaec.triplan.ui.writeplace.city.SelectCityActivity
+import com.imaec.triplan.ui.writeplace.naverplace.SelectNaverPlaceBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,18 +51,17 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
             observe(this@WritePlaceActivity) {
                 when (it) {
                     WritePlaceState.OnClickCategory -> {
-                        // TODO 카테고리 선택 화면
                         startActivityForResult(
-                            SelectCategoryActivity.SELECT_CATEGORY,
-                            SelectCategoryActivity::class.java
-                        ) {
-                            it.getSerializableExtra(SelectCategoryActivity.CATEGORY)?.let {
-                                viewModel.setCategory(it as CategoryDto)
+                            key = SelectCategoryActivity.SELECT_CATEGORY,
+                            activity = SelectCategoryActivity::class.java,
+                            onResultOk = {
+                                it.getSerializableExtra(SelectCategoryActivity.CATEGORY)?.let {
+                                    viewModel.setCategory(it as CategoryDto)
+                                }
                             }
-                        }
+                        )
                     }
                     WritePlaceState.OnClickAddCategory -> {
-                        // TODO 카테고리 추가 다이얼로그
                         InputDialog(
                             context = this@WritePlaceActivity,
                             title = "카테고리 추가",
@@ -68,16 +73,16 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                     }
                     WritePlaceState.OnClickCity -> {
                         startActivityForResult(
-                            SelectCityActivity.SELECT_CITY,
-                            SelectCityActivity::class.java
-                        ) {
-                            it.getSerializableExtra(SelectCityActivity.CITY)?.let {
-                                viewModel.setCity(it as CityDto)
+                            key = SelectCityActivity.SELECT_CITY,
+                            activity = SelectCityActivity::class.java,
+                            onResultOk = {
+                                it.getSerializableExtra(SelectCityActivity.CITY)?.let {
+                                    viewModel.setCity(it as CityDto)
+                                }
                             }
-                        }
+                        )
                     }
                     WritePlaceState.OnClickAddCity -> {
-                        // TODO 지역 추가 다이얼로그
                         InputDialog(
                             context = this@WritePlaceActivity,
                             title = "지역 추가",
@@ -89,14 +94,37 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                     }
                     WritePlaceState.OnClickAddress -> {
                         startActivityForResult(
-                            SearchAddressActivity.SEARCH_ADDRESS,
-                            SearchAddressActivity::class.java
-                        ) {
-                            it.getStringExtra(SearchAddressActivity.ADDRESS)?.let {
-                                viewModel.setAddress(it)
+                            key = SearchAddressActivity.SEARCH_ADDRESS,
+                            activity = SearchAddressActivity::class.java,
+                            bundle = SearchAddressActivity.createBundle(
+                                viewModel.getAddressNotDefault()
+                            ),
+                            onResultOk = {
+                                it.getStringExtra(SearchAddressActivity.ADDRESS)?.let {
+                                    viewModel.setAddress(it)
+                                }
                             }
-                        }
+                        )
                     }
+                    is WritePlaceState.OnLoadNaverPlace -> {
+                        SelectNaverPlaceBottomSheet.instance(
+                            manager = supportFragmentManager,
+                            list = it.list,
+                            listener = object : CommonBottomListener<NaverPlaceDto> {
+                                override fun onBottomSelected(data: NaverPlaceDto) {
+                                    viewModel.setPlace(
+                                        data.copy(
+                                            title = HtmlCompat.fromHtml(
+                                                data.title,
+                                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                                            ).toString()
+                                        )
+                                    )
+                                }
+                            }
+                        )
+                    }
+                    is WritePlaceState.OnError -> toast(it.message)
                 }
             }
         }
@@ -105,7 +133,8 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
     private fun startActivityForResult(
         key: String,
         activity: Class<*>,
-        onResultOk: (Intent) -> Unit
+        onResultOk: (Intent) -> Unit,
+        bundle: Bundle = bundleOf()
     ) {
         activityResultRegistry.register(
             key,
@@ -114,6 +143,10 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
             if (it.resultCode == RESULT_OK) {
                 it.data?.let(onResultOk)
             }
-        }.launch(Intent(this, activity))
+        }.launch(
+            Intent(this, activity).apply {
+                putExtras(bundle)
+            }
+        )
     }
 }

@@ -1,6 +1,16 @@
 package com.imaec.data.repository
 
+import com.imaec.data.api.KEY_CONFM_KEY
+import com.imaec.data.api.KEY_COUNT_PER_PAGE
+import com.imaec.data.api.KEY_CURRENT_PAGE
+import com.imaec.data.api.KEY_KEYWORD
+import com.imaec.data.api.KEY_RESULT_TYPE
+import com.imaec.data.api.NO_ERROR
 import com.imaec.data.api.RoadAddressService
+import com.imaec.data.api.VALUE_CONFM_KEY
+import com.imaec.data.api.VALUE_COUNT_PER_PAGE
+import com.imaec.data.api.VALUE_CURRENT_PAGE
+import com.imaec.data.api.VALUE_RESULT_TYPE
 import com.imaec.domain.Result
 import com.imaec.domain.model.RoadAddressDto
 import com.imaec.domain.repository.RoadAddressRepository
@@ -19,22 +29,20 @@ class RoadAddressRepositoryImpl(
         emit(Result.Loading)
         val result = service.getAddress(
             mapOf(
-                "confmKey" to "U01TX0FVVEgyMDIyMDQwNDE1MjI1MjExMjQxNzU=",
-                "currentPage" to "1",
-                "countPerPage" to "30",
-                "keyword" to keyword,
-                "resultType" to "json"
+                KEY_CONFM_KEY to VALUE_CONFM_KEY,
+                KEY_CURRENT_PAGE to VALUE_CURRENT_PAGE,
+                KEY_COUNT_PER_PAGE to VALUE_COUNT_PER_PAGE,
+                KEY_KEYWORD to keyword,
+                KEY_RESULT_TYPE to VALUE_RESULT_TYPE
             )
         ).toDto()
 
-        if (result.results.common.errorCode == "0") {
+        if (result.results.common.errorCode == NO_ERROR) {
             if (result.results.juso.isNullOrEmpty()) {
                 emit(Result.Empty)
             } else {
                 emit(Result.Success(result.results.juso!!))
             }
-        } else {
-            emit(Result.Error(Exception(result.results.common.errorMessage)))
         }
     }.catch { e ->
         Result.Error(Exception(e))

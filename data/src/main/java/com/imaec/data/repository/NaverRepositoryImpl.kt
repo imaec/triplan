@@ -1,6 +1,10 @@
 package com.imaec.data.repository
 
+import com.imaec.data.api.KEY_COUNT
+import com.imaec.data.api.KEY_QUERY
 import com.imaec.data.api.NaverService
+import com.imaec.data.api.STATUS_OK
+import com.imaec.data.api.VALUE_COUNT
 import com.imaec.domain.Result
 import com.imaec.domain.model.AddressDto
 import com.imaec.domain.repository.NaverRepository
@@ -19,11 +23,11 @@ class NaverRepositoryImpl(
         emit(Result.Loading)
         val result = service.getAddress(
             mapOf(
-                "query" to query,
-                "count" to "30"
+                KEY_QUERY to query,
+                KEY_COUNT to VALUE_COUNT
             )
         ).toDto()
-        if (result.status == "OK") {
+        if (result.status == STATUS_OK) {
             if (result.addresses.isEmpty()) {
                 emit(Result.Empty)
             } else {

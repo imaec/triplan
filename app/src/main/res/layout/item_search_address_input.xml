@@ -14,26 +14,48 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp">
 
-        <EditText
-            style="@style/Text14RegularGray66"
-            android:id="@+id/et_search"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_search_address"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:background="@null"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:hint="주소를 입력하세요."
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
-            android:text="@={vm.address}"
-            app:layout_constraintStart_toStartOf="parent"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:endIconDrawable="@drawable/ic_delete"
+            app:endIconMode="clear_text"
+            app:hintEnabled="false"
+            app:layout_constraintStart_toEndOf="@id/iv_search"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/Text14RegularGray66"
+                android:id="@+id/tie_search_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:paddingStart="8dp"
+                android:paddingVertical="0dp"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:hint="주소를 입력하세요."
+                android:text="@={vm.address}"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/til_search_address"
+            app:layout_constraintBottom_toBottomOf="@id/til_search_address"
+            android:src="@drawable/ic_search"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/gray99"
-            app:layout_constraintTop_toBottomOf="@id/et_search"/>
+            app:layout_constraintTop_toBottomOf="@id/til_search_address"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

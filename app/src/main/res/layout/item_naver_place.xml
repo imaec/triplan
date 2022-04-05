@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.writeplace.naverplace.SelectNaverPlaceViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.domain.model.NaverPlaceDto" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        bindSingleClick="@{() -> vm.onClickPlace(item)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:id="@+id/text_item_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.category}"
+            android:textColor="@color/blue"
+            android:textSize="11sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="음식점" />
+
+        <TextView
+            android:id="@+id/text_item_name"
+            bindHtmlText="@{item.title}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/gray33"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_category"
+            tools:text="스타벅스 공릉점" />
+
+        <TextView
+            android:id="@+id/text_item_addr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.roadAddress}"
+            android:textColor="@color/gray66"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_name"
+            tools:text="서울시 노원구 공릉로 22번길 22" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
