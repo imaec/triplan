@@ -33,7 +33,9 @@ class PlaceRepositoryImpl(
     override suspend fun savePlace(place: PlaceDto): PlaceDto {
         val entity = PlaceEntity(
             categoryId = place.categoryId,
+            category = place.category,
             cityId = place.cityId,
+            city = place.city,
             placeName = place.placeName,
             address = place.address,
             siteUrl = place.siteUrl,

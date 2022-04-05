@@ -27,7 +27,9 @@ import com.imaec.domain.model.PlaceDto
 data class PlaceEntity(
     @PrimaryKey(autoGenerate = true) val placeId: Long = 0,
     @ColumnInfo val categoryId: Long,
+    val category: String,
     @ColumnInfo val cityId: Long,
+    val city: String,
     @ColumnInfo val placeName: String,
     @ColumnInfo val address: String = "",
     @ColumnInfo val siteUrl: String = "",
@@ -38,7 +40,9 @@ data class PlaceEntity(
         fun toDto(entity: PlaceEntity) = PlaceDto(
             placeId = entity.placeId,
             categoryId = entity.categoryId,
+            category = entity.category,
             cityId = entity.cityId,
+            city = entity.city,
             placeName = entity.placeName,
             address = entity.address,
             siteUrl = entity.siteUrl,

@@ -140,7 +140,9 @@ class WritePlaceViewModel @Inject constructor(
             savePlaceUseCase(
                 PlaceDto(
                     categoryId = category.value?.categoryId ?: -1,
+                    category = category.value?.category ?: "",
                     cityId = city.value?.cityId ?: -1,
+                    city = city.value?.city ?: "",
                     placeName = placeName.get() ?: "",
                     address = address.value ?: "",
                     siteUrl = site.value ?: ""

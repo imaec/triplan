@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlaceDao : BaseDao<PlaceEntity> {
 
-    @Query("SELECT * FROM placeEntity")
+    @Query(
+        value = "SELECT * FROM placeEntity AS place " +
+            "INNER JOIN categoryEntity ON place.categoryId = categoryEntity.categoryId " +
+            "INNER JOIN cityEntity ON place.cityId = cityEntity.cityId"
+    )
     fun getPlaceList(): Flow<List<PlaceEntity>>
 }

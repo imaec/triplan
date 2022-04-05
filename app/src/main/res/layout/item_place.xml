@@ -3,6 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.main.myplace.MyPlaceViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.domain.model.PlaceDto" />
+    </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -26,11 +36,12 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                style="@style/Text15BoldGray33"
+                style="@style/Text14BoldGray33"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:paddingHorizontal="16dp"
+                android:paddingHorizontal="8dp"
+                android:text="@{item.placeName}"
                 app:layout_constraintEnd_toStartOf="@id/tv_city"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
@@ -41,7 +52,8 @@
                 style="@style/Text12RegularGray66"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
+                android:paddingHorizontal="8dp"
+                android:text="@{item.city}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_name"
@@ -52,7 +64,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:paddingHorizontal="16dp"
+                android:paddingHorizontal="8dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="@{item.address}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name"
                 tools:text="제주시 애월읍 애월리" />

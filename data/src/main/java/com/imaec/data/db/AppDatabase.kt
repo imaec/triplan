@@ -17,7 +17,7 @@ import com.imaec.data.entity.PlaceEntity
         CityEntity::class,
         PlaceEntity::class
     ],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 

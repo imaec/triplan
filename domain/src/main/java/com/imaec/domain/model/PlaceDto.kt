@@ -6,7 +6,9 @@ import java.util.Date
 data class PlaceDto(
     val placeId: Long = 0,
     val categoryId: Long,
+    val category: String,
     val cityId: Long,
+    val city: String,
     val placeName: String,
     val address: String = "",
     val siteUrl: String = "",
