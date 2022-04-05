@@ -124,6 +124,10 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                             }
                         )
                     }
+                    WritePlaceState.OnSuccess -> {
+                        setResult(RESULT_OK)
+                        finish()
+                    }
                     is WritePlaceState.OnError -> toast(it.message)
                 }
             }
@@ -148,5 +152,9 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                 putExtras(bundle)
             }
         )
+    }
+
+    companion object {
+        const val WRITE_PLACE = "write_place"
     }
 }

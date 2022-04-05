@@ -1,4 +1,4 @@
-package com.imaec.domain.usecase.place
+package com.imaec.domain.usecase.naverplace
 
 import com.imaec.domain.IoDispatcher
 import com.imaec.domain.Result

@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface PlaceRepository {
 
     fun getPlaceList(): Flow<Result<List<PlaceDto>>>
+
+    suspend fun savePlace(place: PlaceDto): PlaceDto
 }

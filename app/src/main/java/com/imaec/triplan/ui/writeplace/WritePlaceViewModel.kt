@@ -9,9 +9,11 @@ import com.imaec.domain.Result
 import com.imaec.domain.model.CategoryDto
 import com.imaec.domain.model.CityDto
 import com.imaec.domain.model.NaverPlaceDto
+import com.imaec.domain.model.PlaceDto
 import com.imaec.domain.usecase.category.AddCategoryUseCase
 import com.imaec.domain.usecase.city.AddCityUseCase
-import com.imaec.domain.usecase.place.GetNaverPlaceUseCase
+import com.imaec.domain.usecase.naverplace.GetNaverPlaceUseCase
+import com.imaec.domain.usecase.place.SavePlaceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -21,19 +23,20 @@ import javax.inject.Inject
 class WritePlaceViewModel @Inject constructor(
     private val addCategoryUseCase: AddCategoryUseCase,
     private val addCityUseCase: AddCityUseCase,
-    private val getNaverPlaceUseCase: GetNaverPlaceUseCase
+    private val getNaverPlaceUseCase: GetNaverPlaceUseCase,
+    private val savePlaceUseCase: SavePlaceUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<WritePlaceState>()
     val state: LiveData<WritePlaceState> get() = _state
 
-    private val _category = MutableLiveData(CategoryDto(-1, "카테고리를 선택해주세요."))
+    private val _category = MutableLiveData(CategoryDto(-1, ""))
     val category: LiveData<CategoryDto> get() = _category
 
-    private val _city = MutableLiveData(CityDto(-1, "지역을 선택해주세요."))
+    private val _city = MutableLiveData(CityDto(-1, ""))
     val city: LiveData<CityDto> get() = _city
 
-    private val _address = MutableLiveData("주소를 입력해주세요.")
+    private val _address = MutableLiveData("")
     val address: LiveData<String> get() = _address
 
     private val _site = MutableLiveData<String>()
@@ -125,5 +128,41 @@ class WritePlaceViewModel @Inject constructor(
 
     fun onClickAddress() {
         _state.value = WritePlaceState.OnClickAddress
+    }
+
+    fun onClickSave() {
+        val checkResult = checkInputValue()
+        if (checkResult.isNotEmpty()) {
+            _state.value = WritePlaceState.OnError(checkResult)
+            return
+        }
+        viewModelScope.launch {
+            savePlaceUseCase(
+                PlaceDto(
+                    categoryId = category.value?.categoryId ?: -1,
+                    cityId = city.value?.cityId ?: -1,
+                    placeName = placeName.get() ?: "",
+                    address = address.value ?: "",
+                    siteUrl = site.value ?: ""
+                )
+            )
+            _state.value = WritePlaceState.OnSuccess
+        }
+    }
+
+    private fun checkInputValue(): String {
+        // 카테고리 선택 확인
+        if (category.value?.categoryId ?: -1 == -1L) {
+            return "카테고리를 선택해주세요."
+        }
+        // 지역 선택 확인
+        if (city.value?.cityId ?: -1 == -1L) {
+            return "지역을 선택해주세요."
+        }
+        // 장소 이름 입력 확인
+        if (placeName.get().isNullOrBlank()) {
+            return "장소 이름을 입력해주세요."
+        }
+        return ""
     }
 }

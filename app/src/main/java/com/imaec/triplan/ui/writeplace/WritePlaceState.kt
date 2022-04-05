@@ -10,5 +10,6 @@ sealed class WritePlaceState {
     object OnClickAddCity : WritePlaceState()
     object OnClickAddress : WritePlaceState()
     data class OnLoadNaverPlace(val list: List<NaverPlaceDto>) : WritePlaceState()
+    object OnSuccess : WritePlaceState()
     data class OnError(val message: String) : WritePlaceState()
 }
