@@ -14,7 +14,6 @@ import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseFragment
 import com.imaec.triplan.base.BaseListAdapter
 import com.imaec.triplan.databinding.FragmentMyPlaceBinding
-import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
 import com.imaec.triplan.ui.writeplace.WritePlaceActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,8 +49,6 @@ class MyPlaceFragment : BaseFragment<FragmentMyPlaceBinding>(R.layout.fragment_m
             if (animator is SimpleItemAnimator) {
                 animator.supportsChangeAnimations = false
             }
-
-            addItemDecoration(RecyclerViewDividerDecoration())
 
             adapter = BaseListAdapter(
                 layoutResId = R.layout.item_place,

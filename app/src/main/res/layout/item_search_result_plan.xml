@@ -7,11 +7,7 @@
 
         <variable
             name="vm"
-            type="com.imaec.triplan.ui.main.myplace.MyPlaceViewModel" />
-
-        <variable
-            name="item"
-            type="com.imaec.domain.model.PlaceDto" />
+            type="com.imaec.triplan.ui.main.search.SearchViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -31,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/grayEE"
-                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintDimensionRatio="W,1:2.5"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -41,11 +37,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:paddingHorizontal="8dp"
-                android:text="@{item.placeName}"
                 app:layout_constraintEnd_toStartOf="@id/tv_city"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
-                tools:text="애월 카페" />
+                tools:text="6월 제주 여행" />
 
             <TextView
                 android:id="@+id/tv_city"
@@ -53,7 +48,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="8dp"
-                android:text="@{item.city}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_name"
@@ -67,10 +61,9 @@
                 android:paddingHorizontal="8dp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:text="@{item.address}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name"
-                tools:text="제주시 애월읍 애월리" />
+                tools:text="2022.06.01 ~ 2022.06.05" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

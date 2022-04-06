@@ -1,11 +1,16 @@
 package com.imaec.triplan.base
 
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.imaec.domain.Result
+import com.imaec.triplan.R
+import com.imaec.triplan.ui.main.search.SearchViewModel
 import java.util.concurrent.atomic.AtomicBoolean
 
 @BindingAdapter("bindVisible")
@@ -67,5 +72,26 @@ fun RecyclerView.bindItemList(itemResult: Result<*>) {
         (adapter as? BaseListAdapter<Any>)?.run {
             submitList(itemResult.data as List<Any>)
         }
+    }
+}
+
+@BindingAdapter(
+    value = [
+        "bindSearchRecentKeywordList",
+        "bindSearchViewModel"
+    ]
+)
+fun ChipGroup.bindSearchRecent(recentList: List<String>, vm: SearchViewModel) {
+    removeAllViews()
+
+    recentList.forEach {
+        val chip = LayoutInflater.from(context)
+            .inflate(R.layout.chip_recent_keyword, this, false) as Chip
+        chip.text = it
+        chip.setOnClickListener { _ ->
+            vm.onClickKeyword(it)
+        }
+
+        addView(chip)
     }
 }
