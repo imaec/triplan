@@ -9,4 +9,8 @@ interface PlaceRepository {
     fun getPlaceList(): Flow<Result<List<PlaceDto>>>
 
     suspend fun savePlace(place: PlaceDto): PlaceDto
+
+    suspend fun editPlace(place: PlaceDto): PlaceDto
+
+    suspend fun deletePlace(place: PlaceDto): PlaceDto
 }

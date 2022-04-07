@@ -25,6 +25,13 @@ fun View.bindSingleClick(clickListener: View.OnClickListener?) {
     } ?: setOnClickListener(null)
 }
 
+@BindingAdapter("bindLongClick")
+fun View.bindLongClick(clickListener: View.OnLongClickListener?) {
+    clickListener?.also {
+        setOnLongClickListener(OnLongClickListener(it))
+    } ?: setOnClickListener(null)
+}
+
 class OnSingleClickListener(
     private val clickListener: View.OnClickListener,
     private val intervalMs: Long = 1000
@@ -43,6 +50,28 @@ class OnSingleClickListener(
                 clickListener.onClick(v)
             }
         }
+    }
+}
+
+class OnLongClickListener(
+    private val clickListener: View.OnLongClickListener,
+    private val intervalMs: Long = 1000
+) : View.OnLongClickListener {
+    private var canClick = AtomicBoolean(true)
+
+    override fun onLongClick(v: View?): Boolean {
+        if (canClick.getAndSet(false)) {
+            v?.run {
+                postDelayed(
+                    {
+                        canClick.set(true)
+                    },
+                    intervalMs
+                )
+                return clickListener.onLongClick(v)
+            }
+        }
+        return false
     }
 }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.Result
 import com.imaec.domain.model.PlaceDto
+import com.imaec.domain.usecase.place.DeletePlaceUseCase
 import com.imaec.domain.usecase.place.GetPlaceListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPlaceViewModel @Inject constructor(
-    private val getPlaceListUseCase: GetPlaceListUseCase
+    private val getPlaceListUseCase: GetPlaceListUseCase,
+    private val deletePlaceUseCase: DeletePlaceUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<MyPlaceState>()
@@ -37,7 +39,23 @@ class MyPlaceViewModel @Inject constructor(
         }
     }
 
+    fun deletePlace(place: PlaceDto) {
+        viewModelScope.launch {
+            deletePlaceUseCase(place)
+            _state.value = MyPlaceState.DeletedPlace("\"${place.placeName}\"이(가) 삭제되었습니다.")
+        }
+    }
+
     fun onClickWrite() {
         _state.value = MyPlaceState.OnClickWrite
+    }
+
+    fun onClickPlace(place: PlaceDto) {
+        _state.value = MyPlaceState.OnClickPlace(place)
+    }
+
+    fun onLongClickPlace(place: PlaceDto): Boolean {
+        _state.value = MyPlaceState.OnLongClickPlace(place)
+        return false
     }
 }

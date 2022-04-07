@@ -13,7 +13,7 @@ import com.imaec.triplan.databinding.ActivityCityManagementBinding
 import com.imaec.triplan.ext.hideKeyboard
 import com.imaec.triplan.ext.toast
 import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
-import com.imaec.triplan.ui.common.input.InputDialog
+import com.imaec.triplan.ui.common.InputDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -9,12 +9,13 @@ import androidx.core.text.HtmlCompat
 import com.imaec.domain.model.CategoryDto
 import com.imaec.domain.model.CityDto
 import com.imaec.domain.model.NaverPlaceDto
+import com.imaec.domain.model.PlaceDto
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.databinding.ActivityWritePlaceBinding
 import com.imaec.triplan.ext.toast
 import com.imaec.triplan.ui.common.CommonBottomListener
-import com.imaec.triplan.ui.common.input.InputDialog
+import com.imaec.triplan.ui.common.InputDialog
 import com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressActivity
 import com.imaec.triplan.ui.writeplace.category.SelectCategoryActivity
 import com.imaec.triplan.ui.writeplace.city.SelectCityActivity
@@ -125,7 +126,6 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                         )
                     }
                     WritePlaceState.OnSuccess -> {
-                        setResult(RESULT_OK)
                         finish()
                     }
                     is WritePlaceState.OnError -> toast(it.message)
@@ -155,6 +155,15 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
     }
 
     companion object {
-        const val WRITE_PLACE = "write_place"
+        const val PLACE = "place"
+        const val TYPE = "type"
+
+        fun createBundle(
+            place: PlaceDto,
+            type: WritePlaceType
+        ): Bundle = bundleOf(
+            PLACE to place,
+            TYPE to type
+        )
     }
 }

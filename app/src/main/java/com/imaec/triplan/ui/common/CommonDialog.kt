@@ -1,19 +1,18 @@
-package com.imaec.triplan.ui.common.input
+package com.imaec.triplan.ui.common
 
 import android.content.Context
 import android.os.Bundle
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseDialog
-import com.imaec.triplan.databinding.DialogInputBinding
+import com.imaec.triplan.databinding.DialogCommonBinding
 
-class InputDialog(
+class CommonDialog(
     context: Context,
     private val title: String,
-    private val hint: String,
     private val text: String = "",
     private val cancelCallback: (() -> Unit)? = null,
-    private val okCallback: ((String) -> Unit)? = null
-) : BaseDialog<DialogInputBinding>(context, R.layout.dialog_input) {
+    private val okCallback: (() -> Unit)? = null
+) : BaseDialog<DialogCommonBinding>(context, R.layout.dialog_common) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,16 +23,14 @@ class InputDialog(
     private fun setupBinding() {
         with(binding) {
             tvTitle.text = title
-            etInput.setText(text)
-            etInput.setSelection(etInput.length())
-            etInput.hint = hint
+            tvMessage.text = text
             tvCancel.setOnClickListener {
                 dismiss()
                 cancelCallback?.invoke()
             }
             tvOk.setOnClickListener {
                 dismiss()
-                okCallback?.invoke(etInput.text.toString())
+                okCallback?.invoke()
             }
         }
     }

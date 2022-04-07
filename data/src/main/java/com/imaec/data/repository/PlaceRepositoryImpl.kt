@@ -45,4 +45,38 @@ class PlaceRepositoryImpl(
         val result = dao.insert(entity)
         return toDto(entity.copy(placeId = result))
     }
+
+    override suspend fun editPlace(place: PlaceDto): PlaceDto {
+        val entity = PlaceEntity(
+            placeId = place.placeId,
+            categoryId = place.categoryId,
+            category = place.category,
+            cityId = place.cityId,
+            city = place.city,
+            placeName = place.placeName,
+            address = place.address,
+            siteUrl = place.siteUrl,
+            imageUrl = place.imageUrl,
+            saveTime = place.saveTime
+        )
+        dao.update(entity)
+        return place
+    }
+
+    override suspend fun deletePlace(place: PlaceDto): PlaceDto {
+        val entity = PlaceEntity(
+            placeId = place.placeId,
+            categoryId = place.categoryId,
+            category = place.category,
+            cityId = place.cityId,
+            city = place.city,
+            placeName = place.placeName,
+            address = place.address,
+            siteUrl = place.siteUrl,
+            imageUrl = place.imageUrl,
+            saveTime = place.saveTime
+        )
+        dao.delete(entity)
+        return place
+    }
 }

@@ -1,5 +1,6 @@
 package com.imaec.domain.model
 
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -14,4 +15,4 @@ data class PlaceDto(
     val siteUrl: String = "",
     val imageUrl: String = "",
     val saveTime: String = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
-)
+) : Serializable

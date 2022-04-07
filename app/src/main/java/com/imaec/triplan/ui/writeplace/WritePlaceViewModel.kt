@@ -3,6 +3,7 @@ package com.imaec.triplan.ui.writeplace
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.Result
@@ -13,7 +14,10 @@ import com.imaec.domain.model.PlaceDto
 import com.imaec.domain.usecase.category.AddCategoryUseCase
 import com.imaec.domain.usecase.city.AddCityUseCase
 import com.imaec.domain.usecase.naverplace.GetNaverPlaceUseCase
+import com.imaec.domain.usecase.place.EditPlaceUseCase
 import com.imaec.domain.usecase.place.SavePlaceUseCase
+import com.imaec.triplan.ui.writeplace.WritePlaceActivity.Companion.PLACE
+import com.imaec.triplan.ui.writeplace.WritePlaceActivity.Companion.TYPE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -21,28 +25,45 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WritePlaceViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val addCategoryUseCase: AddCategoryUseCase,
     private val addCityUseCase: AddCityUseCase,
     private val getNaverPlaceUseCase: GetNaverPlaceUseCase,
-    private val savePlaceUseCase: SavePlaceUseCase
+    private val savePlaceUseCase: SavePlaceUseCase,
+    private val editPlaceUseCase: EditPlaceUseCase
 ) : ViewModel() {
+
+    private val place = savedStateHandle.get<PlaceDto>(PLACE)
+    private val type = savedStateHandle.get<WritePlaceType>(TYPE) ?: WritePlaceType.WRITE
 
     private val _state = MutableLiveData<WritePlaceState>()
     val state: LiveData<WritePlaceState> get() = _state
 
-    private val _category = MutableLiveData(CategoryDto(-1, ""))
+    private val _category = MutableLiveData(
+        place?.let {
+            CategoryDto(it.categoryId, it.category)
+        } ?: run {
+            CategoryDto(-1, "")
+        }
+    )
     val category: LiveData<CategoryDto> get() = _category
 
-    private val _city = MutableLiveData(CityDto(-1, ""))
+    private val _city = MutableLiveData(
+        place?.let {
+            CityDto(it.cityId, it.city)
+        } ?: run {
+            CityDto(-1, "")
+        }
+    )
     val city: LiveData<CityDto> get() = _city
 
-    private val _address = MutableLiveData("")
+    private val _address = MutableLiveData(place?.address ?: "")
     val address: LiveData<String> get() = _address
 
-    private val _site = MutableLiveData<String>()
+    private val _site = MutableLiveData(place?.siteUrl ?: "")
     val site: LiveData<String> get() = _site
 
-    val placeName = ObservableField("")
+    val placeName = ObservableField(place?.placeName ?: "")
 
     fun setCategory(category: CategoryDto) {
         _category.value = category
@@ -137,17 +158,20 @@ class WritePlaceViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            savePlaceUseCase(
-                PlaceDto(
-                    categoryId = category.value?.categoryId ?: -1,
-                    category = category.value?.category ?: "",
-                    cityId = city.value?.cityId ?: -1,
-                    city = city.value?.city ?: "",
-                    placeName = placeName.get() ?: "",
-                    address = address.value ?: "",
-                    siteUrl = site.value ?: ""
-                )
+            val place = PlaceDto(
+                placeId = place?.placeId ?: -1,
+                categoryId = category.value?.categoryId ?: -1,
+                category = category.value?.category ?: "",
+                cityId = city.value?.cityId ?: -1,
+                city = city.value?.city ?: "",
+                placeName = placeName.get() ?: "",
+                address = address.value ?: "",
+                siteUrl = site.value ?: ""
             )
+            when (type) {
+                WritePlaceType.WRITE -> savePlaceUseCase(place)
+                WritePlaceType.EDIT -> editPlaceUseCase(place)
+            }
             _state.value = WritePlaceState.OnSuccess
         }
     }

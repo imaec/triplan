@@ -1,10 +1,7 @@
 package com.imaec.triplan.ui.main.myplace
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -14,7 +11,11 @@ import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseFragment
 import com.imaec.triplan.base.BaseListAdapter
 import com.imaec.triplan.databinding.FragmentMyPlaceBinding
+import com.imaec.triplan.ext.startActivity
+import com.imaec.triplan.ext.toast
+import com.imaec.triplan.ui.common.CommonDialog
 import com.imaec.triplan.ui.writeplace.WritePlaceActivity
+import com.imaec.triplan.ui.writeplace.WritePlaceType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,20 +65,24 @@ class MyPlaceFragment : BaseFragment<FragmentMyPlaceBinding>(R.layout.fragment_m
             observe(viewLifecycleOwner) {
                 when (it) {
                     MyPlaceState.OnClickWrite -> {
-                        requireActivity().activityResultRegistry.register(
-                            WritePlaceActivity.WRITE_PLACE,
-                            ActivityResultContracts.StartActivityForResult()
-                        ) {
-                            if (it.resultCode == AppCompatActivity.RESULT_OK) {
-                                // TODO 내 장소 리스트 갱신
-                            }
-                        }.launch(
-                            Intent(
-                                requireContext(),
-                                WritePlaceActivity::class.java
-                            )
+                        startActivity<WritePlaceActivity>()
+                    }
+                    is MyPlaceState.OnClickPlace -> {
+                        startActivity<WritePlaceActivity>(
+                            WritePlaceActivity.createBundle(it.place, WritePlaceType.EDIT)
                         )
                     }
+                    is MyPlaceState.OnLongClickPlace -> {
+                        CommonDialog(
+                            context = requireContext(),
+                            title = "내 장소 삭제",
+                            text = "\"${it.place.placeName}\"을(를) 삭제하시겠습니까?",
+                            okCallback = {
+                                viewModel.deletePlace(it.place)
+                            }
+                        ).show()
+                    }
+                    is MyPlaceState.DeletedPlace -> toast(it.message)
                 }
             }
         }
