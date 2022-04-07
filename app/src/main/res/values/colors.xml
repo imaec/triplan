@@ -15,5 +15,6 @@
     <color name="grayBB">#BBBBBB</color>
     <color name="grayCC">#CCCCCC</color>
     <color name="grayEE">#EEEEEE</color>
+    <color name="grayF1">#F1F1F1</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

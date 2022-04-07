@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.main.home.HomeViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.triplan.ui.main.home.HomeItem.Plan" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <TextView
+            android:id="@+id/tv_plan"
+            style="@style/Text14BoldGray33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.title}"
+            app:layout_constraintStart_toStartOf="@id/guide_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="다녀온 일정"/>
+
+        <TextView
+            style="@style/Text12RegularGray66"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전체보기"
+            app:layout_constraintEnd_toEndOf="@id/guide_end"
+            app:layout_constraintTop_toTopOf="@id/tv_plan"
+            app:layout_constraintBottom_toBottomOf="@id/tv_plan"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_plan"
+            bindPlanList="@{item.list}"
+            bindHomeViewModel="@{vm}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/tv_plan"
+            tools:listitem="@layout/item_home_plan"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
