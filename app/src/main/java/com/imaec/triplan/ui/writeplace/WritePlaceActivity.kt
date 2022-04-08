@@ -17,9 +17,9 @@ import com.imaec.triplan.ext.toast
 import com.imaec.triplan.ui.common.CommonBottomListener
 import com.imaec.triplan.ui.common.InputDialog
 import com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressActivity
-import com.imaec.triplan.ui.writeplace.category.SelectCategoryActivity
-import com.imaec.triplan.ui.writeplace.city.SelectCityActivity
-import com.imaec.triplan.ui.writeplace.naverplace.SelectNaverPlaceBottomSheet
+import com.imaec.triplan.ui.select.category.SelectCategoryActivity
+import com.imaec.triplan.ui.select.city.SelectCityActivity
+import com.imaec.triplan.ui.select.naverplace.SelectNaverPlaceBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

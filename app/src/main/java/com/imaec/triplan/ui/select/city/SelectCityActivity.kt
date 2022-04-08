@@ -1,4 +1,4 @@
-package com.imaec.triplan.ui.writeplace.city
+package com.imaec.triplan.ui.select.city
 
 import android.content.Intent
 import android.os.Bundle

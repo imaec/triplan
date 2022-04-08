@@ -1,4 +1,4 @@
-package com.imaec.triplan.ui.writeplace.city
+package com.imaec.triplan.ui.select.city
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

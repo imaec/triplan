@@ -5,6 +5,7 @@ import com.imaec.data.db.AppDatabase
 import com.imaec.data.db.dao.CategoryDao
 import com.imaec.data.db.dao.CityDao
 import com.imaec.data.db.dao.PlaceDao
+import com.imaec.data.db.dao.PlanDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,4 +40,10 @@ object DataBaseModule {
     fun providePlaceDao(
         database: AppDatabase
     ): PlaceDao = database.placeDao()
+
+    @Singleton
+    @Provides
+    fun providePlanDao(
+        database: AppDatabase
+    ): PlanDao = database.planDao()
 }

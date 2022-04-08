@@ -1,10 +1,14 @@
 package com.imaec.triplan.ui.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.imaec.domain.model.CityDto
 import com.imaec.triplan.BR
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseFragment
@@ -13,6 +17,7 @@ import com.imaec.triplan.base.ViewHolderType
 import com.imaec.triplan.databinding.FragmentHomeBinding
 import com.imaec.triplan.ext.startActivity
 import com.imaec.triplan.ui.calendar.CalendarActivity
+import com.imaec.triplan.ui.select.city.SelectCityActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,7 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     if (oldItem is HomeItem.Plan &&
                         newItem is HomeItem.Plan
                     ) {
-                        oldItem.title == newItem.title
+                        oldItem.planType == newItem.planType
                     } else {
                         oldItem == newItem
                     }
@@ -89,7 +94,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             observe(viewLifecycleOwner) {
                 when (it) {
                     HomeState.OnClickWrite -> {
-                        startActivity<CalendarActivity>()
+                        requireActivity().activityResultRegistry.register(
+                            SelectCityActivity.SELECT_CITY,
+                            ActivityResultContracts.StartActivityForResult()
+                        ) {
+                            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                                it.data?.getSerializableExtra(SelectCityActivity.CITY)?.let {
+                                    startActivity<CalendarActivity>(
+                                        CalendarActivity.createBundle(it as CityDto)
+                                    )
+                                }
+                            }
+                        }.launch(
+                            Intent(requireContext(), SelectCityActivity::class.java)
+                        )
                     }
                 }
             }

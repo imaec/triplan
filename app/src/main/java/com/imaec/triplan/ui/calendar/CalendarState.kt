@@ -6,4 +6,5 @@ sealed class CalendarState {
 
     data class OnClickMonth(val month: CalendarMonth) : CalendarState()
     object OnClickDay : CalendarState()
+    object OnClickAdd : CalendarState()
 }

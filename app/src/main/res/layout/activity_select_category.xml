@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.imaec.triplan.ui.writeplace.category.SelectCategoryViewModel" />
+            type="com.imaec.triplan.ui.select.category.SelectCategoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

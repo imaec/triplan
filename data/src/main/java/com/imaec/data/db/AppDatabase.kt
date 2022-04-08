@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import com.imaec.data.db.dao.CategoryDao
 import com.imaec.data.db.dao.CityDao
 import com.imaec.data.db.dao.PlaceDao
+import com.imaec.data.db.dao.PlanDao
 import com.imaec.data.entity.local.CategoryEntity
 import com.imaec.data.entity.local.CityEntity
 import com.imaec.data.entity.local.PlaceEntity
@@ -28,6 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
     abstract fun cityDao(): CityDao
     abstract fun placeDao(): PlaceDao
+    abstract fun planDao(): PlanDao
 
     companion object {
         private const val DB_NAME = "tri-plan-database"

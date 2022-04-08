@@ -3,7 +3,9 @@ package com.imaec.triplan.ui.calendar
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.imaec.domain.model.CityDto
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.databinding.ActivityCalendarBinding
@@ -80,6 +82,17 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding>(R.layout.activity
             setNavigationOnClickListener {
                 finish()
             }
+
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menu_clear -> {
+                        viewModel.clearPlan()
+                        binding.calendar.notifyCalendarChanged()
+                        true
+                    }
+                    else -> false
+                }
+            }
         }
     }
 
@@ -90,9 +103,8 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding>(R.layout.activity
                     is CalendarState.OnClickMonth -> {
                         binding.calendar.smoothScrollToMonth(it.month.yearMonth)
                     }
-                    CalendarState.OnClickDay -> {
-                        binding.calendar.notifyCalendarChanged()
-                    }
+                    CalendarState.OnClickDay -> binding.calendar.notifyCalendarChanged()
+                    CalendarState.OnClickAdd -> finish()
                 }
             }
         }
@@ -104,5 +116,15 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding>(R.layout.activity
 
     inner class DayViewContainer(view: View) : ViewContainer(view) {
         val binding = ViewCalendarDayBinding.bind(view)
+    }
+
+    companion object {
+        const val CITY = "city"
+
+        fun createBundle(
+            city: CityDto
+        ): Bundle = bundleOf(
+            CITY to city
+        )
     }
 }

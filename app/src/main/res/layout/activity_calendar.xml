@@ -18,26 +18,12 @@
             android:id="@+id/mtb_calendar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/menu_calendar"
             app:navigationIcon="@drawable/ic_back"
             app:navigationIconTint="@color/black"
             app:title="일정 선택"
             app:titleTextAppearance="@style/Text20BoldBlack"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                style="@style/Text14RegularGray33"
-                bindVisible="@{vm.buttonText.length() > 0}"
-                bindSingleClick="@{() -> vm.onClickClearPlan()}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="center"
-                android:layout_marginEnd="8dp"
-                android:padding="8dp"
-                android:text="초기화"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_weekly"

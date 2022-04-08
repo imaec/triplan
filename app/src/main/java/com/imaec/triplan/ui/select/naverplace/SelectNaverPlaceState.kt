@@ -1,4 +1,4 @@
-package com.imaec.triplan.ui.writeplace.naverplace
+package com.imaec.triplan.ui.select.naverplace
 
 import com.imaec.domain.model.NaverPlaceDto
 

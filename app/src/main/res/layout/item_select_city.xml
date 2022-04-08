@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.imaec.triplan.ui.writeplace.city.SelectCityViewModel" />
+            type="com.imaec.triplan.ui.select.city.SelectCityViewModel" />
 
         <variable
             name="item"

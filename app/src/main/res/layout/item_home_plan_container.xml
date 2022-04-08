@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.imaec.triplan.ui.main.home.HomePlanType" />
+
         <variable
             name="vm"
             type="com.imaec.triplan.ui.main.home.HomeViewModel" />
@@ -35,21 +37,22 @@
 
         <TextView
             android:id="@+id/tv_plan"
-            style="@style/Text14BoldGray33"
+            style="@style/Text20BoldGray33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.title}"
+            android:text="@{item.planType.title}"
             app:layout_constraintStart_toStartOf="@id/guide_start"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="다녀온 일정"/>
 
         <TextView
             style="@style/Text12RegularGray66"
+            bindVisible="@{item.planType != HomePlanType.CURRENT}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:text="전체보기"
             app:layout_constraintEnd_toEndOf="@id/guide_end"
-            app:layout_constraintTop_toTopOf="@id/tv_plan"
             app:layout_constraintBottom_toBottomOf="@id/tv_plan"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -59,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
+            android:paddingVertical="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/tv_plan"
             tools:listitem="@layout/item_home_plan"/>

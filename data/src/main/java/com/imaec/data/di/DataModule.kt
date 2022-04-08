@@ -6,17 +6,20 @@ import com.imaec.data.api.RoadAddressService
 import com.imaec.data.db.dao.CategoryDao
 import com.imaec.data.db.dao.CityDao
 import com.imaec.data.db.dao.PlaceDao
+import com.imaec.data.db.dao.PlanDao
 import com.imaec.data.repository.CategoryRepositoryImpl
 import com.imaec.data.repository.CityRepositoryImpl
 import com.imaec.data.repository.NaverLocalRepositoryImpl
 import com.imaec.data.repository.NaverRepositoryImpl
 import com.imaec.data.repository.PlaceRepositoryImpl
+import com.imaec.data.repository.PlanRepositoryImpl
 import com.imaec.data.repository.RoadAddressRepositoryImpl
 import com.imaec.domain.repository.CategoryRepository
 import com.imaec.domain.repository.CityRepository
 import com.imaec.domain.repository.NaverLocalRepository
 import com.imaec.domain.repository.NaverRepository
 import com.imaec.domain.repository.PlaceRepository
+import com.imaec.domain.repository.PlanRepository
 import com.imaec.domain.repository.RoadAddressRepository
 import dagger.Module
 import dagger.Provides
@@ -41,6 +44,10 @@ object DataModule {
     @Provides
     @Singleton
     fun providePlaceRepository(dao: PlaceDao): PlaceRepository = PlaceRepositoryImpl(dao)
+
+    @Provides
+    @Singleton
+    fun providePlanRepository(dao: PlanDao): PlanRepository = PlanRepositoryImpl(dao)
 
     @Provides
     @Singleton

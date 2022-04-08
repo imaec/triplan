@@ -1,4 +1,4 @@
-package com.imaec.triplan.ui.writeplace.category
+package com.imaec.triplan.ui.select.category
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

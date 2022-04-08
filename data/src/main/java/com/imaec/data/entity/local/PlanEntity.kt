@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.imaec.domain.model.PlanDto
 import com.imaec.domain.model.PlanItemDto
+import java.time.LocalDate
 
 @Entity(tableName = "planEntity")
 data class PlanEntity(
@@ -12,8 +13,8 @@ data class PlanEntity(
     @ColumnInfo val planName: String,
     @ColumnInfo val planItemList: List<PlanItemDto>,
     @ColumnInfo val city: String,
-    @ColumnInfo val startDate: String,
-    @ColumnInfo val endDate: String
+    @ColumnInfo val startDate: LocalDate,
+    @ColumnInfo val endDate: LocalDate
 ) {
     companion object {
         fun toDto(entity: PlanEntity) = PlanDto(
