@@ -1,8 +1,8 @@
 package com.imaec.data.repository
 
 import com.imaec.data.db.dao.CategoryDao
-import com.imaec.data.entity.CategoryEntity
-import com.imaec.data.entity.CategoryEntity.Companion.toDto
+import com.imaec.data.entity.local.CategoryEntity
+import com.imaec.data.entity.local.CategoryEntity.Companion.toDto
 import com.imaec.domain.Result
 import com.imaec.domain.model.CategoryDto
 import com.imaec.domain.repository.CategoryRepository

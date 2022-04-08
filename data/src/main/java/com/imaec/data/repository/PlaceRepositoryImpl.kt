@@ -1,8 +1,8 @@
 package com.imaec.data.repository
 
 import com.imaec.data.db.dao.PlaceDao
-import com.imaec.data.entity.PlaceEntity
-import com.imaec.data.entity.PlaceEntity.Companion.toDto
+import com.imaec.data.entity.local.PlaceEntity
+import com.imaec.data.entity.local.PlaceEntity.Companion.toDto
 import com.imaec.domain.Result
 import com.imaec.domain.model.PlaceDto
 import com.imaec.domain.repository.PlaceRepository

@@ -2,7 +2,7 @@ package com.imaec.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.imaec.data.entity.CategoryEntity
+import com.imaec.data.entity.local.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

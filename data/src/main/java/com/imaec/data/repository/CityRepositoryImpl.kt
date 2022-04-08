@@ -1,9 +1,9 @@
 package com.imaec.data.repository
 
 import com.imaec.data.db.dao.CityDao
-import com.imaec.data.entity.CityEntity
-import com.imaec.data.entity.CityEntity.Companion.fromDto
-import com.imaec.data.entity.CityEntity.Companion.toDto
+import com.imaec.data.entity.local.CityEntity
+import com.imaec.data.entity.local.CityEntity.Companion.fromDto
+import com.imaec.data.entity.local.CityEntity.Companion.toDto
 import com.imaec.domain.Result
 import com.imaec.domain.model.CityDto
 import com.imaec.domain.repository.CityRepository

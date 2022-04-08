@@ -1,4 +1,4 @@
-package com.imaec.data.entity
+package com.imaec.data.entity.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
