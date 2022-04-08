@@ -27,6 +27,7 @@ class CityManagementActivity :
 
         setupBinding()
         setupRecyclerView()
+        setupData()
         setupListener()
         setupObserver()
     }
@@ -82,6 +83,10 @@ class CityManagementActivity :
                 diffUtil = diffUtil
             )
         }
+    }
+
+    private fun setupData() {
+        viewModel.fetchData()
     }
 
     private fun setupListener() {

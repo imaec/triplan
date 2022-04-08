@@ -53,12 +53,12 @@ class HomeViewModel @Inject constructor(
                             result.keys.sortedBy {
                                 it.ordinal
                             }.forEach {
+                                if (tempList.isNotEmpty()) tempList.add(HomeItem.Divider)
                                 result[it]?.let { list ->
                                     if (list.isNotEmpty()) {
                                         tempList.add(HomeItem.Plan(it, list.take(2)))
                                     }
                                 }
-                                if (tempList.isNotEmpty()) tempList.add(HomeItem.Divider)
                             }
 
                             _homeList.value = tempList
