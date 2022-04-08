@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.calendar.CalendarViewModel" />
+
+        <variable
+            name="item"
+            type="com.kizitonwose.calendarview.model.CalendarMonth" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="8dp">
+
+        <TextView
+            style="@style/Text16BoldGray33"
+            bindSingleClick="@{() -> vm.onClickMonth(item)}"
+            android:id="@+id/tv_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.year + `년 ` + item.yearMonth.month.value + `월`}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="2022년 4월" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

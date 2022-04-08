@@ -13,6 +13,8 @@ object Versions {
     const val google_services = "4.3.10"
     const val ktlint = "10.0.0"
 
+    const val desugar = "1.1.5"
+
     const val gradle = "4.0.1"
     const val kotlin = "1.6.10"
     const val appcompat = "1.4.1"
@@ -44,10 +46,13 @@ object Versions {
     const val firebase = "29.0.4"
 
     const val jsoup = "1.11.3"
+    const val calendar = "1.0.4"
     const val timber = "4.7.1"
 }
 
 object Libs {
+    const val desugar = "com.android.tools:desugar_jdk_libs:${Versions.desugar}"
+
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
     const val core_ktx = "androidx.core:core-ktx:${Versions.core_ktx}"
@@ -80,6 +85,8 @@ object Libs {
     const val room_compiler = "androidx.room:room-compiler:${Versions.room}"
     // Jsoup
     const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
+    // Calendar
+    const val calendar = "com.github.kizitonwose:CalendarView:${Versions.calendar}"
     // Timber
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
 }

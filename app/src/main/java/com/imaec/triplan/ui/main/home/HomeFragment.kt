@@ -11,6 +11,8 @@ import com.imaec.triplan.base.BaseFragment
 import com.imaec.triplan.base.BaseMultiListAdapter
 import com.imaec.triplan.base.ViewHolderType
 import com.imaec.triplan.databinding.FragmentHomeBinding
+import com.imaec.triplan.ext.startActivity
+import com.imaec.triplan.ui.calendar.CalendarActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +26,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         setupBinding()
         setupRecyclerView()
         setupData()
+        setupObserver()
     }
 
     private fun setupBinding() {
@@ -79,6 +82,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun setupData() {
         viewModel.fetchData()
+    }
+
+    private fun setupObserver() {
+        with(viewModel.state) {
+            observe(viewLifecycleOwner) {
+                when (it) {
+                    HomeState.OnClickWrite -> {
+                        startActivity<CalendarActivity>()
+                    }
+                }
+            }
+        }
     }
 
     enum class HomeHolderType(

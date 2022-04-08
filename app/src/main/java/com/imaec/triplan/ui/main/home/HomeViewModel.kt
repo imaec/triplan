@@ -10,6 +10,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
 
+    private val _state = MutableLiveData<HomeState>()
+    val state: LiveData<HomeState> get() = _state
+
     private val _homeList = MutableLiveData<List<HomeItem>>()
     val homeList: LiveData<List<HomeItem>> get() = _homeList
 
@@ -58,5 +61,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onClickWrite() {
+        _state.value = HomeState.OnClickWrite
     }
 }

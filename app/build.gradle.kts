@@ -38,6 +38,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -53,6 +54,8 @@ kapt {
 }
 
 dependencies {
+    coreLibraryDesugaring(Libs.desugar)
+
     implementation(project(":domain"))
     implementation(project(":data"))
 
@@ -94,6 +97,7 @@ dependencies {
     kapt(Libs.room_compiler)
 
     implementation(Libs.jsoup)
+    implementation(Libs.calendar)
     implementation(Libs.timber)
 }
 

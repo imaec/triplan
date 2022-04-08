@@ -24,12 +24,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.category.CategoryManagementActivity"/>
-        <activity android:name=".ui.city.CityManagementActivity"/>
+        <activity android:name=".ui.calendar.CalendarActivity"/>
         <activity android:name=".ui.writeplace.WritePlaceActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ui.writeplace.category.SelectCategoryActivity"/>
         <activity android:name=".ui.writeplace.city.SelectCityActivity"/>
         <activity android:name=".ui.writeplace.searchaddress.SearchAddressActivity"/>
+        <activity android:name=".ui.category.CategoryManagementActivity"/>
+        <activity android:name=".ui.city.CityManagementActivity"/>
     </application>
 </manifest>
