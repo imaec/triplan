@@ -25,6 +25,7 @@
         </activity>
 
         <activity android:name=".ui.calendar.CalendarActivity"/>
+        <activity android:name=".ui.plan.PlanDetailActivity"/>
         <activity android:name=".ui.writeplace.WritePlaceActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name="com.imaec.triplan.ui.select.category.SelectCategoryActivity"/>

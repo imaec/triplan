@@ -5,7 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.Result
+import com.imaec.domain.model.PlanDto
 import com.imaec.domain.usecase.plan.GetPlanListUseCase
+import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
+import com.imaec.triplan.ext.dateToStringFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -23,6 +26,8 @@ class HomeViewModel @Inject constructor(
     private val _homeList = MutableLiveData<List<HomeItem>>()
     val homeList: LiveData<List<HomeItem>> get() = _homeList
 
+    fun dateToString(date: Long): String = date.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+
     fun fetchData() {
         viewModelScope.launch {
             getPlanListUseCase().collect {
@@ -32,14 +37,16 @@ class HomeViewModel @Inject constructor(
                             it.startDate
                         }.groupBy {
                             val today = LocalDate.now()
+                            val startDate = LocalDate.ofEpochDay(it.startDate)
+                            val endDate = LocalDate.ofEpochDay(it.endDate)
                             when {
-                                it.startDate == today ||
-                                    it.endDate == today ||
-                                    (it.startDate.isBefore(today) && it.endDate.isAfter(today)) -> {
+                                startDate == today ||
+                                    endDate == today ||
+                                    (startDate.isBefore(today) && endDate.isAfter(today)) -> {
                                     // 현재 일정
                                     HomePlanType.CURRENT
                                 }
-                                it.startDate.isAfter(today) -> {
+                                startDate.isAfter(today) -> {
                                     // 다가오는 일정
                                     HomePlanType.UPCOMING
                                 }
@@ -73,5 +80,9 @@ class HomeViewModel @Inject constructor(
 
     fun onClickWrite() {
         _state.value = HomeState.OnClickWrite
+    }
+
+    fun onClickPlan(plan: PlanDto) {
+        _state.value = HomeState.OnClickPlan(plan)
     }
 }

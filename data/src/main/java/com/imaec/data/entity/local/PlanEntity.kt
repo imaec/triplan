@@ -3,24 +3,23 @@ package com.imaec.data.entity.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.imaec.domain.model.PlanDayDto
 import com.imaec.domain.model.PlanDto
-import com.imaec.domain.model.PlanItemDto
-import java.time.LocalDate
 
 @Entity(tableName = "planEntity")
 data class PlanEntity(
     @PrimaryKey(autoGenerate = true) val planId: Long = 0,
     @ColumnInfo val planName: String,
-    @ColumnInfo val planItemList: List<PlanItemDto>,
+    @ColumnInfo val planDayList: List<PlanDayDto>,
     @ColumnInfo val city: String,
-    @ColumnInfo val startDate: LocalDate,
-    @ColumnInfo val endDate: LocalDate
+    @ColumnInfo val startDate: Long,
+    @ColumnInfo val endDate: Long
 ) {
     companion object {
         fun toDto(entity: PlanEntity) = PlanDto(
             planId = entity.planId,
             planName = entity.planName,
-            planItemList = entity.planItemList,
+            planDayList = entity.planDayList,
             city = entity.city,
             startDate = entity.startDate,
             endDate = entity.endDate,
@@ -29,7 +28,7 @@ data class PlanEntity(
         fun fromDto(dto: PlanDto) = PlanEntity(
             planId = dto.planId,
             planName = dto.planName,
-            planItemList = dto.planItemList,
+            planDayList = dto.planDayList,
             city = dto.city,
             startDate = dto.startDate,
             endDate = dto.endDate,

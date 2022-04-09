@@ -15,6 +15,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        bindSingleClick="@{() -> vm.onClickPlan(item)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -67,7 +68,7 @@
                 android:paddingHorizontal="8dp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:text="@{item.startDateString() + ` ~ ` + item.endDateString()}"
+                android:text="@{vm.dateToString(item.startDate) + ` ~ ` + vm.dateToString(item.endDate)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name"
                 tools:text="2022.06.01 ~ 2022.06.05" />

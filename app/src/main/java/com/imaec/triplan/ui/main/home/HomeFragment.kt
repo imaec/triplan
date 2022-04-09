@@ -17,6 +17,7 @@ import com.imaec.triplan.base.ViewHolderType
 import com.imaec.triplan.databinding.FragmentHomeBinding
 import com.imaec.triplan.ext.startActivity
 import com.imaec.triplan.ui.calendar.CalendarActivity
+import com.imaec.triplan.ui.plan.PlanDetailActivity
 import com.imaec.triplan.ui.select.city.SelectCityActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -107,6 +108,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                             }
                         }.launch(
                             Intent(requireContext(), SelectCityActivity::class.java)
+                        )
+                    }
+                    is HomeState.OnClickPlan -> {
+                        startActivity<PlanDetailActivity>(
+                            PlanDetailActivity.createBundle(it.plan)
                         )
                     }
                 }

@@ -7,9 +7,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.model.CityDto
+import com.imaec.domain.model.PlanDayDto
 import com.imaec.domain.model.PlanDto
 import com.imaec.domain.usecase.plan.AddPlanUseCase
+import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
 import com.imaec.triplan.ext.addSourceList
+import com.imaec.triplan.ext.dateToStringFormat
 import com.imaec.triplan.ui.calendar.CalendarActivity.Companion.CITY
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -18,6 +21,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,17 +51,15 @@ class CalendarViewModel @Inject constructor(
     private fun selectedDate(): String {
         return when {
             startDate.value != null && endDate.value == null -> {
-                "${dateToString(startDate.value)} 일정 추가"
+                "${startDate.value.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)} 일정 추가"
             }
             startDate.value != null && endDate.value != null -> {
-                "${dateToString(startDate.value)} ~ ${dateToString(endDate.value)} 일정 추가"
+                "${startDate.value.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)} ~ " +
+                    "${startDate.value.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)} 일정 추가"
             }
             else -> ""
         }
     }
-
-    private fun dateToString(date: LocalDate?): String =
-        DateTimeFormatter.ofPattern("yyyy.MM.dd(E)").format(date)
 
     fun clearPlan() {
         _startDate.value = null
@@ -92,14 +94,27 @@ class CalendarViewModel @Inject constructor(
 
         val planName =
             "${DateTimeFormatter.ofPattern("yy년 MM월").format(startDate.value)} ${city.city} 여행"
+        val days = ChronoUnit.DAYS.between(startDate.value, endDate.value).toInt()
+        val planDayList = mutableListOf<PlanDayDto>()
+        var date = startDate.value!!
+        for (i in 0 until days + 1) {
+            planDayList.add(
+                PlanDayDto(
+                    planDay = i + 1,
+                    planDate = date.toEpochDay(),
+                    planItemList = listOf()
+                )
+            )
+            date = date.plusDays(1)
+        }
         viewModelScope.launch {
             addPlanUseCase(
                 PlanDto(
                     planName = planName,
-                    planItemList = listOf(),
+                    planDayList = planDayList,
                     city = city.city,
-                    startDate = startDate.value!!,
-                    endDate = endDate.value!!,
+                    startDate = startDate.value!!.toEpochDay(),
+                    endDate = endDate.value!!.toEpochDay(),
                 )
             )
             _state.value = CalendarState.OnClickAdd

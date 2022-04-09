@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.plan.list.PlanListViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.triplan.ui.plan.list.PlanListItem.PlanItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="106dp">
+
+        <View
+            bindVisible="@{!item.planItem.lastItem}"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/grayF1"
+            android:layout_marginVertical="3dp"
+            app:layout_constraintStart_toStartOf="@id/tv_number"
+            app:layout_constraintEnd_toEndOf="@id/tv_number"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/white"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/tv_number"
+            app:layout_constraintEnd_toEndOf="@id/tv_number"
+            app:layout_constraintTop_toTopOf="@id/tv_number"
+            app:layout_constraintBottom_toBottomOf="@id/tv_number"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/tv_number"
+            style="@style/Text14BoldWhite"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/bg_sr_sky_all20"
+            android:gravity="center"
+            android:text="@{String.valueOf(item.planItem.itemNo)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="3dp"
+            app:contentPadding="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="3dp"
+            app:layout_constraintStart_toEndOf="@id/tv_number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_place_name"
+                    style="@style/Text14BoldGray33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.planItem.placeName}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_place_info"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="제주 국제 공항"/>
+
+                <TextView
+                    android:id="@+id/tv_place_info"
+                    style="@style/Text12RegularGray66"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@{item.planItem.city + `・` + item.planItem.category}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_place_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="제주・기타"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
