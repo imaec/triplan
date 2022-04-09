@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.place.PlaceMoreViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mtb_place_more"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationIconTint="@color/black"
+            app:title="내 장소 전체보기"
+            app:titleTextAppearance="@style/Text20BoldBlack"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:title="내 장소 전체보기" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_place_more"
+            bindItemList="@{vm.placeList}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintTop_toBottomOf="@id/mtb_place_more"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_place_more"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

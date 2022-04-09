@@ -50,7 +50,9 @@ class SearchViewModel @Inject constructor(
         false
     }
 
-    private fun search(keyword: String) {
+    fun search(keyword: String?) {
+        if (keyword.isNullOrBlank()) return
+
         viewModelScope.launch {
             val planDeferred = async {
                 searchPlanListUseCase(SearchParam("%$keyword%"))
@@ -71,10 +73,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onClickSearch() {
-        val keyword = search.get() ?: ""
-        if (keyword.isEmpty()) return
-
-        search(keyword)
+        search(search.get())
     }
 
     fun onClickKeyword(keyword: String) {
@@ -94,6 +93,6 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onClickPlaceMore() {
-        _state.value = SearchState.OnClickPlaceMore
+        _state.value = SearchState.OnClickPlaceMore(search.get())
     }
 }

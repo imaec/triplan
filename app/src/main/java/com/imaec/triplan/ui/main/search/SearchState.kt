@@ -9,5 +9,5 @@ sealed class SearchState {
     data class OnClickPlan(val plan: PlanDto) : SearchState()
     data class OnClickPlanMore(val keyword: String?) : SearchState()
     data class OnClickPlace(val place: PlaceDto) : SearchState()
-    object OnClickPlaceMore : SearchState()
+    data class OnClickPlaceMore(val keyword: String?) : SearchState()
 }

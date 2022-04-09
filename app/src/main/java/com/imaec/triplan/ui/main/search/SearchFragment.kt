@@ -1,8 +1,12 @@
 package com.imaec.triplan.ui.main.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -15,6 +19,7 @@ import com.imaec.triplan.databinding.FragmentSearchBinding
 import com.imaec.triplan.ext.hideKeyboard
 import com.imaec.triplan.ext.startActivity
 import com.imaec.triplan.ui.main.MainActivity
+import com.imaec.triplan.ui.place.PlaceMoreActivity
 import com.imaec.triplan.ui.plan.PlanDetailActivity
 import com.imaec.triplan.ui.plan.more.PlanMoreActivity
 import com.imaec.triplan.ui.writeplace.WritePlaceActivity
@@ -33,6 +38,7 @@ class SearchFragment :
 
         setupBinding()
         setupRecyclerView()
+        setupListener()
         setupObserver()
     }
 
@@ -85,6 +91,20 @@ class SearchFragment :
         }
     }
 
+    private fun setupListener() {
+        with(binding) {
+            tieSearch.setOnEditorActionListener { v, actionId, _ ->
+                var handled = false
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    viewModel.search(viewModel.search.get())
+                    hideKeyboard(v)
+                    handled = true
+                }
+                handled
+            }
+        }
+    }
+
     private fun setupObserver() {
         with(viewModel.state) {
             observe(viewLifecycleOwner) {
@@ -108,7 +128,19 @@ class SearchFragment :
                             WritePlaceActivity.createBundle(it.place, WritePlaceType.EDIT)
                         )
                     }
-                    SearchState.OnClickPlaceMore -> {
+                    is SearchState.OnClickPlaceMore -> {
+                        requireActivity().activityResultRegistry.register(
+                            PlaceMoreActivity.PLACE_MORE,
+                            ActivityResultContracts.StartActivityForResult()
+                        ) {
+                            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                                viewModel.search(viewModel.search.get())
+                            }
+                        }.launch(
+                            Intent(requireContext(), PlaceMoreActivity::class.java).apply {
+                                putExtras(PlaceMoreActivity.createBundle(keyword = it.keyword))
+                            }
+                        )
                     }
                 }
             }
