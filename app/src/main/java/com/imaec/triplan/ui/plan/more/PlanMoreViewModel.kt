@@ -36,7 +36,13 @@ class PlanMoreViewModel @Inject constructor(
 
     private val planType = savedStateHandle.get<PlanType>(PLAN_TYPE)
 
-    fun dateToString(date: Long): String = date.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+    fun getDateString(startDate: Long, endDate: Long): String =
+        if (startDate == endDate) {
+            startDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+        } else {
+            "${startDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)} ~ " +
+                endDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+        }
 
     fun fetchData() {
         viewModelScope.launch {

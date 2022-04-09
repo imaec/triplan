@@ -27,7 +27,13 @@ class HomeViewModel @Inject constructor(
     private val _homeList = MutableLiveData<List<HomeItem>>()
     val homeList: LiveData<List<HomeItem>> get() = _homeList
 
-    fun dateToString(date: Long): String = date.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+    fun getDateString(startDate: Long, endDate: Long): String =
+        if (startDate == endDate) {
+            startDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+        } else {
+            "${startDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)} ~ " +
+                endDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+        }
 
     fun fetchData() {
         viewModelScope.launch {

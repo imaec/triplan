@@ -94,6 +94,7 @@ class CalendarViewModel @Inject constructor(
 
         val planName =
             "${DateTimeFormatter.ofPattern("yy년 MM월").format(startDate.value)} ${city.city} 여행"
+        if (endDate.value == null) _endDate.value = startDate.value
         val days = ChronoUnit.DAYS.between(startDate.value, endDate.value).toInt()
         val planDayList = mutableListOf<PlanDayDto>()
         var date = startDate.value!!

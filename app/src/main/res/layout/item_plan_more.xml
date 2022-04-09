@@ -68,7 +68,7 @@
                 android:paddingHorizontal="8dp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:text="@{vm.dateToString(item.startDate) + ` ~ ` + vm.dateToString(item.endDate)}"
+                android:text="@{vm.getDateString(item.startDate, item.endDate)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name"
                 tools:text="2022.06.01 ~ 2022.06.05" />

@@ -29,7 +29,13 @@ class PlanDetailViewModel @Inject constructor(
 
     val plan = savedStateHandle.get<PlanDto>(PLAN)
 
-    fun dateToString(date: Long): String = date.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+    fun getDateString(startDate: Long, endDate: Long): String =
+        if (startDate == endDate) {
+            startDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+        } else {
+            "${startDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)} ~ " +
+                endDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
+        }
 
     fun setCurrentPage(currentPage: Int) {
         plan ?: return
