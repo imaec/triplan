@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import java.lang.Exception
 
 class PlaceRepositoryImpl(
@@ -29,6 +30,8 @@ class PlaceRepositoryImpl(
     }.catch { e ->
         Result.Error(Exception(e))
     }.flowOn(Dispatchers.IO)
+
+    override fun searchPlaceList(keyword: String) = dao.searchPlaceList(keyword).map(::toDto)
 
     override suspend fun savePlace(place: PlaceDto): PlaceDto {
         val entity = PlaceEntity(

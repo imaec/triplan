@@ -8,9 +8,14 @@
         <variable
             name="vm"
             type="com.imaec.triplan.ui.main.search.SearchViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.domain.model.PlanDto" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        bindSingleClick="@{() -> vm.onClickPlan(item)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -37,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:paddingHorizontal="8dp"
+                android:text="@{item.planName}"
                 app:layout_constraintEnd_toStartOf="@id/tv_city"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
@@ -48,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="8dp"
+                android:text="@{item.city}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_name"
@@ -61,6 +68,7 @@
                 android:paddingHorizontal="8dp"
                 android:singleLine="true"
                 android:ellipsize="end"
+                android:text="@{vm.getDateString(item.startDate, item.endDate)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name"
                 tools:text="2022.06.01 ~ 2022.06.05" />

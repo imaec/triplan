@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.main.search.SearchViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.triplan.ui.main.search.SearchItem.SearchResultPlace" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -22,30 +33,36 @@
             app:layout_constraintGuide_end="16dp" />
 
         <TextView
-            android:id="@+id/tv_my_plan"
-            style="@style/Text14RegularGray33"
+            android:id="@+id/tv_my_place"
+            style="@style/Text16BoldGray33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="내 일정"
+            android:layout_marginTop="16dp"
+            android:text="내 장소"
             app:layout_constraintStart_toStartOf="@id/guide_start"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             style="@style/Text12RegularGray66"
+            bindSingleClick="@{() -> vm.onClickPlaceMore()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전체보기"
             app:layout_constraintEnd_toEndOf="@id/guide_end"
-            app:layout_constraintTop_toTopOf="@id/tv_my_plan"
-            app:layout_constraintBottom_toBottomOf="@id/tv_my_plan"/>
+            app:layout_constraintTop_toTopOf="@id/tv_my_place"
+            app:layout_constraintBottom_toBottomOf="@id/tv_my_place"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_my_plan"
+            android:id="@+id/rv_my_place"
+            bindPlaceList="@{item.list}"
+            bindSearchViewModel="@{vm}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_my_plan"
-            tools:listitem="@layout/item_search_result_plan"/>
+            android:padding="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintTop_toBottomOf="@id/tv_my_place"
+            tools:listitem="@layout/item_search_result_place"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

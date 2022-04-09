@@ -8,6 +8,8 @@ interface PlaceRepository {
 
     fun getPlaceList(): Flow<Result<List<PlaceDto>>>
 
+    fun searchPlaceList(keyword: String): List<PlaceDto>
+
     suspend fun savePlace(place: PlaceDto): PlaceDto
 
     suspend fun editPlace(place: PlaceDto): PlaceDto

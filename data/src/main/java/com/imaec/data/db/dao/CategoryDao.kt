@@ -11,6 +11,6 @@ interface CategoryDao : BaseDao<CategoryEntity> {
     @Query("SELECT * FROM categoryEntity")
     fun getCategoryList(): Flow<List<CategoryEntity>>
 
-    @Query("SELECT COUNT(*) FROM categoryEntity WHERE :category = category")
+    @Query("SELECT COUNT(*) FROM categoryEntity WHERE category = :category")
     fun getCountByCategory(category: String): Int
 }

@@ -8,9 +8,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlanDao : BaseDao<PlanEntity> {
 
-    @Query(value = "SELECT * FROM planEntity")
+    @Query("SELECT * FROM planEntity")
     fun getPlanList(): Flow<List<PlanEntity>>
 
-    @Query(value = "SELECT * FROM planEntity WHERE :planId = planId")
+    @Query("SELECT * FROM planEntity WHERE planId = :planId")
     fun getPlan(planId: Long): Flow<PlanEntity?>
+
+    @Query(
+        "SELECT * FROM planEntity WHERE planName LIKE :keyword OR city LIKE :keyword LIMIT 2"
+    )
+    fun searchPlanList(keyword: String): List<PlanEntity>
 }

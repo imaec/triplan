@@ -12,6 +12,8 @@ interface PlanRepository {
 
     fun getPlan(planId: Long): Flow<Result<PlanDto>>
 
+    fun searchPlanList(keyword: String): List<PlanDto>
+
     suspend fun updatePlan(plan: PlanDto)
 
     suspend fun deletePlan(plan: PlanDto)

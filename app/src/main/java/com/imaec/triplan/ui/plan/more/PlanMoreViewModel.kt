@@ -11,6 +11,7 @@ import com.imaec.domain.usecase.plan.GetPlanListUseCase
 import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
 import com.imaec.triplan.ext.dateToStringFormat
 import com.imaec.triplan.ui.plan.PlanType
+import com.imaec.triplan.ui.plan.more.PlanMoreActivity.Companion.PLAN_LIST
 import com.imaec.triplan.ui.plan.more.PlanMoreActivity.Companion.PLAN_TYPE
 import com.imaec.triplan.ui.plan.more.PlanMoreActivity.Companion.TITLE
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +32,7 @@ class PlanMoreViewModel @Inject constructor(
     private val _title = MutableLiveData(savedStateHandle.get(TITLE) ?: "일정 전체보기")
     val title: LiveData<String> get() = _title
 
-    private val _planList = MutableLiveData<List<PlanDto>>()
+    private val _planList = MutableLiveData<List<PlanDto>>(savedStateHandle.get(PLAN_LIST))
     val planList: LiveData<List<PlanDto>> get() = _planList
 
     private val planType = savedStateHandle.get<PlanType>(PLAN_TYPE)
@@ -45,6 +46,8 @@ class PlanMoreViewModel @Inject constructor(
         }
 
     fun fetchData() {
+        if (!planList.value.isNullOrEmpty()) return
+
         viewModelScope.launch {
             getPlanListUseCase().collect {
                 when (it) {

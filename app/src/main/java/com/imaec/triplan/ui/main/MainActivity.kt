@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private val viewModel by viewModels<MainViewModel>()
+    private var backPressedListener: OnBackPressedListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +19,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         setupBinding()
         setupViewPager()
         setupListener()
+    }
+
+    override fun onBackPressed() {
+        with(binding) {
+            if (vpMain.currentItem == 0) {
+                super.onBackPressed()
+            } else {
+                if (vpMain.currentItem == 1) {
+                    if (backPressedListener?.onBackPressed() == true) {
+                        vpMain.setCurrentItem(0, false)
+                        changeFragment(R.id.nav_home)
+                        return@with
+                    }
+                } else {
+                    vpMain.setCurrentItem(0, false)
+                    changeFragment(R.id.nav_home)
+                }
+            }
+        }
     }
 
     private fun setupBinding() {
@@ -49,5 +69,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 true
             }
         }
+    }
+
+    fun setBackPressedListener(listener: OnBackPressedListener) {
+        this.backPressedListener = listener
+    }
+
+    private fun changeFragment(navId: Int) {
+        binding.bnvMain.selectedItemId = navId
+    }
+
+    interface OnBackPressedListener {
+        fun onBackPressed(): Boolean
     }
 }

@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.main.search.SearchViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.triplan.ui.main.search.SearchItem.SearchResultPlan" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,15 +34,17 @@
 
         <TextView
             android:id="@+id/tv_my_plan"
-            style="@style/Text14RegularGray33"
+            style="@style/Text16BoldGray33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="내 일정"
             app:layout_constraintStart_toStartOf="@id/guide_start"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             style="@style/Text12RegularGray66"
+            bindSingleClick="@{() -> vm.onClickPlanMore(item.list)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전체보기"
@@ -41,12 +54,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_my_plan"
+            bindPlanList="@{item.list}"
+            bindSearchViewModel="@{vm}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/tv_my_plan"
-            tools:listitem="@layout/item_search_result_place"/>
+            tools:listitem="@layout/item_search_result_plan"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

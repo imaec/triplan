@@ -51,6 +51,7 @@
                 android:paddingStart="8dp"
                 android:paddingVertical="0dp"
                 android:background="@drawable/bg_sr_white_graycc_all4"
+                android:maxLength="10"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
@@ -71,9 +72,10 @@
             app:layout_constraintBottom_toBottomOf="@id/til_search"/>
 
         <androidx.constraintlayout.widget.Group
+            bindVisible="@{vm.searchResultList.size() == 0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tv_recent_keyword,cg_recent_keyword"/>
+            app:constraint_referenced_ids="tv_recent_keyword,tv_recent_keyword_empty,cg_recent_keyword"/>
 
         <TextView
             android:id="@+id/tv_recent_keyword"
@@ -84,6 +86,17 @@
             android:text="최근 검색어"
             app:layout_constraintStart_toStartOf="@id/guide_start"
             app:layout_constraintTop_toBottomOf="@id/til_search"/>
+
+        <TextView
+            android:id="@+id/tv_recent_keyword_empty"
+            style="@style/Text12RegularGray66"
+            bindVisible="@{vm.recentList.size() == 0}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="최근 검색어가 없습니다."
+            app:layout_constraintTop_toBottomOf="@id/tv_recent_keyword"
+            app:layout_constraintStart_toStartOf="@id/tv_recent_keyword"/>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cg_recent_keyword"
@@ -98,17 +111,19 @@
             app:chipSpacingVertical="4dp"
             app:layout_constraintTop_toBottomOf="@id/tv_recent_keyword"/>
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rv_search_result"-->
-<!--            bindItemList="@{vm.searchResultList}"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/til_search"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            tools:listitem="@layout/item_search_result_plan_constainer"/>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_result"
+            bindItemList="@{vm.searchResultList}"
+            bindVisible="@{vm.searchResultList.size() > 0}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_search_result_plan_container"
+            tools:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
