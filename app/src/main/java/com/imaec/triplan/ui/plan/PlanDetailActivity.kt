@@ -1,13 +1,16 @@
 package com.imaec.triplan.ui.plan
 
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.viewpager2.widget.ViewPager2
 import com.imaec.domain.model.PlanDto
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
+import com.imaec.triplan.common.KeyboardVisibilityUtils
 import com.imaec.triplan.databinding.ActivityPlanDetailBinding
+import com.imaec.triplan.ext.hideKeyboard
 import com.imaec.triplan.ui.common.CommonDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PlanDetailActivity : BaseActivity<ActivityPlanDetailBinding>(R.layout.activity_plan_detail) {
 
     private val viewModel by viewModels<PlanDetailViewModel>()
+    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +27,19 @@ class PlanDetailActivity : BaseActivity<ActivityPlanDetailBinding>(R.layout.acti
         setupViewPager()
         setupListener()
         setupObserver()
+    }
+
+    override fun onDestroy() {
+        keyboardVisibilityUtils.detachKeyboardListeners()
+        super.onDestroy()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        currentFocus?.let {
+            hideKeyboard(it, 0)
+            binding.etTitle.clearFocus()
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun setupBinding() {
@@ -70,6 +87,13 @@ class PlanDetailActivity : BaseActivity<ActivityPlanDetailBinding>(R.layout.acti
                     viewModel.setCurrentPage(position)
                 }
             })
+
+            keyboardVisibilityUtils = KeyboardVisibilityUtils(
+                window,
+                onHideKeyboard = {
+                    viewModel.updatePlan()
+                }
+            )
         }
     }
 

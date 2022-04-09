@@ -1,5 +1,6 @@
 package com.imaec.triplan.ui.plan
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.model.PlanDto
 import com.imaec.domain.usecase.plan.DeletePlanUseCase
+import com.imaec.domain.usecase.plan.UpdatePlanUseCase
 import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
 import com.imaec.triplan.ext.dateToStringFormat
 import com.imaec.triplan.ui.plan.PlanDetailActivity.Companion.PLAN
@@ -18,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlanDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val updatePlanUseCase: UpdatePlanUseCase,
     private val deletePlanUseCase: DeletePlanUseCase
 ) : ViewModel() {
 
@@ -28,6 +31,8 @@ class PlanDetailViewModel @Inject constructor(
     val pageType: LiveData<PlanListPageType> get() = _pageType
 
     val plan = savedStateHandle.get<PlanDto>(PLAN)
+
+    val planName = ObservableField(plan?.planName ?: "")
 
     fun getDateString(startDate: Long, endDate: Long): String =
         if (startDate == endDate) {
@@ -43,6 +48,18 @@ class PlanDetailViewModel @Inject constructor(
             0 -> PlanListPageType.FIRST_PAGE
             plan.planDayList.size - 1 -> PlanListPageType.END_PAGE
             else -> PlanListPageType.MIDDLE_PAGE
+        }
+    }
+
+    fun updatePlan() {
+        plan ?: return
+
+        viewModelScope.launch {
+            updatePlanUseCase(
+                plan.copy(
+                    planName = planName.get() ?: plan.planName
+                )
+            )
         }
     }
 

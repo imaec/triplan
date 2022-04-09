@@ -30,12 +30,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    style="@style/Text20BoldBlack"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/et_title"
+                    style="@style/Text16BoldBlack"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.plan.planName}"
+                    android:background="@null"
+                    android:maxLength="30"
+                    android:text="@={vm.planName}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/tv_date"
@@ -44,12 +46,12 @@
 
                 <TextView
                     android:id="@+id/tv_date"
-                    style="@style/Text12RegularGray66"
+                    style="@style/Text10RegularGray66"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{vm.getDateString(vm.plan.startDate, vm.plan.endDate)}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_title"
+                    app:layout_constraintTop_toBottomOf="@id/et_title"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:text="2022.06.01 ~ 2022.06.03"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
