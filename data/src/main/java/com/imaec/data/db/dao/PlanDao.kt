@@ -10,4 +10,7 @@ interface PlanDao : BaseDao<PlanEntity> {
 
     @Query(value = "SELECT * FROM planEntity")
     fun getPlanList(): Flow<List<PlanEntity>>
+
+    @Query(value = "SELECT * FROM planEntity WHERE :planId = planId")
+    fun getPlan(planId: Long): Flow<PlanEntity>
 }

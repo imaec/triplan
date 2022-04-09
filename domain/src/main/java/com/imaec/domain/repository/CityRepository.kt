@@ -12,6 +12,8 @@ interface CityRepository {
 
     fun getCityList(): Flow<Result<List<CityDto>>>
 
+    fun getCity(city: String): Flow<Result<CityDto>>
+
     suspend fun updateCity(city: CityDto)
 
     suspend fun deleteCity(city: CityDto)

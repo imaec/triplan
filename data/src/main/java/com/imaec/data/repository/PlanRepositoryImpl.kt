@@ -40,8 +40,18 @@ class PlanRepositoryImpl(
         Result.Error(Exception(e))
     }.flowOn(Dispatchers.IO)
 
+    override fun getPlan(planId: Long) = flow {
+        emit(Result.Loading)
+        dao.getPlan(planId).collect {
+            emit(Result.Success(toDto(it)))
+        }
+    }.catch { e ->
+        Timber.e("  ## error : ${Log.getStackTraceString(e)}")
+        Result.Error(Exception(e))
+    }.flowOn(Dispatchers.IO)
+
     override suspend fun updatePlan(plan: PlanDto) {
-        TODO("Not yet implemented")
+        dao.update(PlanEntity.fromDto(plan))
     }
 
     override suspend fun deletePlan(plan: PlanDto) {

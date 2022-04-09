@@ -44,6 +44,15 @@ class CityRepositoryImpl(
         Result.Error(Exception(e))
     }.flowOn(Dispatchers.IO)
 
+    override fun getCity(city: String) = flow {
+        emit(Result.Loading)
+        dao.getCity(city).collect {
+            emit(Result.Success(toDto(it)))
+        }
+    }.catch { e ->
+        Result.Error(Exception(e))
+    }.flowOn(Dispatchers.IO)
+
     override suspend fun updateCity(city: CityDto) {
         dao.update(fromDto(city))
     }

@@ -4,18 +4,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.imaec.domain.Result
 import com.imaec.domain.model.PlanDayDto
+import com.imaec.domain.model.PlanDto
 import com.imaec.domain.model.PlanItemDto
+import com.imaec.domain.usecase.plan.GetPlanUseCase
 import com.imaec.triplan.ext.DATE_PATTERN_MM_DD_E
 import com.imaec.triplan.ext.dateToStringFormat
+import com.imaec.triplan.ui.plan.list.PlanListFragment.Companion.PLAN
 import com.imaec.triplan.ui.plan.list.PlanListFragment.Companion.PLAN_DAY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PlanListViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val getPlanUseCase: GetPlanUseCase
 ) : ViewModel() {
+
+    private val _state = MutableLiveData<PlanListState>()
+    val state: LiveData<PlanListState> get() = _state
 
     private val _planDay = MutableLiveData<PlanDayDto>(savedStateHandle.get(PLAN_DAY))
     val planDay: LiveData<PlanDayDto> get() = _planDay
@@ -23,82 +34,51 @@ class PlanListViewModel @Inject constructor(
     private val _planItemList = MutableLiveData<List<PlanListItem>>()
     val planItemList: LiveData<List<PlanListItem>> get() = _planItemList
 
-    init {
-        // TODO 임시 리스트
-        _planItemList.value = listOf(
-            PlanListItem.PlanItem(
-                1,
-                PlanItemDto(
-                    itemNo = 1,
-                    placeName = "PlaceName 1",
-                    city = "제주",
-                    category = "기타",
-                    address = "제주",
-                    time = "1시",
-                    description = "",
-                    cost = ""
+    var plan = savedStateHandle.get<PlanDto>(PLAN)
+
+    fun fetchData() {
+        viewModelScope.launch {
+            getPlanUseCase(plan?.planId ?: 0).collect {
+                when (it) {
+                    is Result.Success -> {
+                        _planDay.value = it.data.planDayList.filter {
+                            it.planDay == planDay.value?.planDay
+                        }.first()
+                        plan = it.data
+                        fetchPlanItemList()
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fetchPlanItemList() {
+        val tempList = mutableListOf<PlanListItem>()
+        planDay.value?.planItemList?.forEachIndexed { index, planItemDto ->
+            tempList.add(
+                PlanListItem.PlanItem(
+                    index + 1,
+                    planItemDto.copy(
+                        lastItem = index == (planDay.value?.planItemList?.size ?: 0) - 1
+                    )
                 )
-            ),
-            PlanListItem.PlanItem(
-                2,
-                PlanItemDto(
-                    itemNo = 2,
-                    placeName = "PlaceName 1",
-                    city = "제주",
-                    category = "기타",
-                    address = "제주",
-                    time = "1시",
-                    description = "",
-                    cost = ""
-                )
-            ),
-            PlanListItem.PlanItem(
-                3,
-                PlanItemDto(
-                    itemNo = 3,
-                    placeName = "PlaceName 2",
-                    city = "제주",
-                    category = "음식점",
-                    address = "제주",
-                    time = "1시",
-                    description = "",
-                    cost = ""
-                )
-            ),
-            PlanListItem.PlanItem(
-                4,
-                PlanItemDto(
-                    itemNo = 4,
-                    placeName = "PlaceName 3",
-                    city = "서귀포",
-                    category = "숙소",
-                    address = "제주",
-                    time = "1시",
-                    description = "",
-                    cost = ""
-                )
-            ),
-            PlanListItem.PlanItem(
-                5,
-                PlanItemDto(
-                    itemNo = 5,
-                    placeName = "PlaceName 4",
-                    city = "제주",
-                    category = "기타",
-                    address = "제주",
-                    time = "1시",
-                    description = "",
-                    cost = "",
-                    lastItem = true
-                )
-            ),
-            PlanListItem.AddButton
-        )
+            )
+        }
+        tempList.add(PlanListItem.AddButton)
+
+        _planItemList.value = tempList
     }
 
     fun title(): String = "DAY ${planDay.value?.planDay} - " +
         planDay.value?.planDate?.dateToStringFormat(DATE_PATTERN_MM_DD_E)
 
     fun onClickAdd() {
+        _state.value = PlanListState.OnClickAdd
+    }
+
+    fun onClickPlanItem(planItem: PlanItemDto) {
+        _state.value = PlanListState.OnClickPlanItem(planItem)
     }
 }

@@ -10,6 +10,8 @@ interface PlanRepository {
 
     fun getPlanList(): Flow<Result<List<PlanDto>>>
 
+    fun getPlan(planId: Long): Flow<Result<PlanDto>>
+
     suspend fun updatePlan(plan: PlanDto)
 
     suspend fun deletePlan(plan: PlanDto)

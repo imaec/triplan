@@ -7,13 +7,18 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.imaec.domain.model.PlanDayDto
+import com.imaec.domain.model.PlanDto
 import com.imaec.triplan.BR
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseFragment
 import com.imaec.triplan.base.BaseMultiListAdapter
 import com.imaec.triplan.base.ViewHolderType
 import com.imaec.triplan.databinding.FragmentPlanListBinding
+import com.imaec.triplan.ext.startActivity
+import com.imaec.triplan.ui.plan.write.PlanWriteActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PlanListFragment : BaseFragment<FragmentPlanListBinding>(R.layout.fragment_plan_list) {
 
     private val viewModel by viewModels<PlanListViewModel>()
@@ -23,6 +28,8 @@ class PlanListFragment : BaseFragment<FragmentPlanListBinding>(R.layout.fragment
 
         setupBinding()
         setupRecyclerView()
+        setupData()
+        setupObserver()
     }
 
     private fun setupBinding() {
@@ -76,6 +83,36 @@ class PlanListFragment : BaseFragment<FragmentPlanListBinding>(R.layout.fragment
         }
     }
 
+    private fun setupData() {
+        viewModel.fetchData()
+    }
+
+    private fun setupObserver() {
+        with(viewModel.state) {
+            observe(viewLifecycleOwner) {
+                when (it) {
+                    is PlanListState.OnClickAdd -> {
+                        startActivity<PlanWriteActivity>(
+                            PlanWriteActivity.createBundle(
+                                plan = viewModel.plan,
+                                planDay = viewModel.planDay.value?.planDay ?: 0
+                            )
+                        )
+                    }
+                    is PlanListState.OnClickPlanItem -> {
+                        startActivity<PlanWriteActivity>(
+                            PlanWriteActivity.createBundle(
+                                plan = viewModel.plan,
+                                planDay = viewModel.planDay.value?.planDay ?: 0,
+                                planItem = it.planItem
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     enum class PlanListHolderType(
         override val layoutResId: Int,
         override val bindingItemId: Int
@@ -91,10 +128,14 @@ class PlanListFragment : BaseFragment<FragmentPlanListBinding>(R.layout.fragment
     }
 
     companion object {
+        const val PLAN = "plan"
         const val PLAN_DAY = "plan_day"
 
-        fun instance(planDay: PlanDayDto) = PlanListFragment().apply {
-            arguments = bundleOf(PLAN_DAY to planDay)
+        fun instance(plan: PlanDto?, planDay: PlanDayDto) = PlanListFragment().apply {
+            arguments = bundleOf(
+                PLAN to plan,
+                PLAN_DAY to planDay
+            )
         }
     }
 }

@@ -33,8 +33,10 @@ class PlanDetailActivity : BaseActivity<ActivityPlanDetailBinding>(R.layout.acti
             vpPlanDetail.apply {
                 adapter = PlanDetailPagerAdapter(
                     this@PlanDetailActivity,
+                    plan = viewModel.plan,
                     planList = viewModel.plan?.planDayList ?: emptyList()
                 )
+                offscreenPageLimit = viewModel.plan?.planDayList?.size ?: 0
             }
         }
     }
