@@ -28,12 +28,7 @@ class SelectCityViewModel @Inject constructor(
             getCityListUseCase().collect { result ->
                 when (result) {
                     is Result.Success -> _cityList.value = result.data ?: emptyList()
-                    Result.Loading -> {
-                    }
-                    Result.Empty -> {
-                    }
-                    is Result.Error -> {
-                    }
+                    Result.Empty -> _cityList.value = emptyList()
                     else -> {}
                 }
             }

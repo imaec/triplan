@@ -29,9 +29,8 @@ class MyPlaceViewModel @Inject constructor(
         viewModelScope.launch {
             getPlaceListUseCase().collect {
                 when (it) {
-                    is Result.Success -> {
-                        _placeList.value = it.data ?: emptyList()
-                    }
+                    is Result.Success -> _placeList.value = it.data ?: emptyList()
+                    Result.Empty -> _placeList.value = emptyList()
                     else -> {
                     }
                 }

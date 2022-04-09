@@ -85,6 +85,7 @@ class HomeViewModel @Inject constructor(
                             _homeList.value = tempList
                         }
                     }
+                    Result.Empty -> _homeList.value = emptyList()
                     else -> {
                     }
                 }

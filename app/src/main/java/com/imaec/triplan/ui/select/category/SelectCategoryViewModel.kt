@@ -28,12 +28,7 @@ class SelectCategoryViewModel @Inject constructor(
             getCategoryListUseCase().collect { result ->
                 when (result) {
                     is Result.Success -> _categoryList.value = result.data ?: emptyList()
-                    Result.Loading -> {
-                    }
-                    Result.Empty -> {
-                    }
-                    is Result.Error -> {
-                    }
+                    Result.Empty -> _categoryList.value = emptyList()
                     else -> {}
                 }
             }

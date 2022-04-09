@@ -73,6 +73,7 @@ class PlanMoreViewModel @Inject constructor(
                                 }
                             }
                         }
+                        Result.Empty -> _planList.value = emptyList()
                         else -> {
                         }
                     }
