@@ -5,8 +5,19 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.imaec.domain.model.PlanDayDto
 import com.imaec.domain.model.PlanItemDto
 import java.time.LocalDate
+import java.util.Date
 
 class Converters {
+
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
 
     @TypeConverter
     fun localDateToLong(date: LocalDate): Long =

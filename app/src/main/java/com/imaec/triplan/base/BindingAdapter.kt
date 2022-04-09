@@ -120,6 +120,9 @@ fun ChipGroup.bindSearchRecent(recentList: List<String>, vm: SearchViewModel) {
         chip.setOnClickListener { _ ->
             vm.onClickKeyword(it)
         }
+        chip.setOnCloseIconClickListener { _ ->
+            vm.onClickDeleteKeyword(it)
+        }
 
         addView(chip)
     }

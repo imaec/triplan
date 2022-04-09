@@ -6,6 +6,7 @@ import com.imaec.data.db.dao.CategoryDao
 import com.imaec.data.db.dao.CityDao
 import com.imaec.data.db.dao.PlaceDao
 import com.imaec.data.db.dao.PlanDao
+import com.imaec.data.db.dao.RecentKeywordDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,4 +47,10 @@ object DataBaseModule {
     fun providePlanDao(
         database: AppDatabase
     ): PlanDao = database.planDao()
+
+    @Singleton
+    @Provides
+    fun provideRecentKeywordDao(
+        database: AppDatabase
+    ): RecentKeywordDao = database.recentKeywordDao()
 }

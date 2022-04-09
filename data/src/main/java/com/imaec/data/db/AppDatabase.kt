@@ -9,17 +9,20 @@ import com.imaec.data.db.dao.CategoryDao
 import com.imaec.data.db.dao.CityDao
 import com.imaec.data.db.dao.PlaceDao
 import com.imaec.data.db.dao.PlanDao
+import com.imaec.data.db.dao.RecentKeywordDao
 import com.imaec.data.entity.local.CategoryEntity
 import com.imaec.data.entity.local.CityEntity
 import com.imaec.data.entity.local.PlaceEntity
 import com.imaec.data.entity.local.PlanEntity
+import com.imaec.data.entity.local.RecentKeywordEntity
 
 @Database(
     entities = [
         CategoryEntity::class,
         CityEntity::class,
         PlaceEntity::class,
-        PlanEntity::class
+        PlanEntity::class,
+        RecentKeywordEntity::class,
     ],
     version = 2
 )
@@ -30,6 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cityDao(): CityDao
     abstract fun placeDao(): PlaceDao
     abstract fun planDao(): PlanDao
+    abstract fun recentKeywordDao(): RecentKeywordDao
 
     companion object {
         private const val DB_NAME = "tri-plan-database"

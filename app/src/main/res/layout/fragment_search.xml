@@ -75,7 +75,7 @@
             bindVisible="@{vm.searchResultList.size() == 0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tv_recent_keyword,tv_recent_keyword_empty,cg_recent_keyword"/>
+            app:constraint_referenced_ids="tv_recent_keyword,cg_recent_keyword"/>
 
         <TextView
             android:id="@+id/tv_recent_keyword"
@@ -105,10 +105,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="12dp"
+            android:layout_marginHorizontal="16dp"
             android:clipToPadding="false"
-            app:chipSpacingHorizontal="4dp"
-            app:chipSpacingVertical="4dp"
+            app:chipSpacing="8dp"
             app:layout_constraintTop_toBottomOf="@id/tv_recent_keyword"/>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -38,6 +38,7 @@ class SearchFragment :
 
         setupBinding()
         setupRecyclerView()
+        setupData()
         setupListener()
         setupObserver()
     }
@@ -89,6 +90,10 @@ class SearchFragment :
                 diffUtil = diffUtil
             )
         }
+    }
+
+    private fun setupData() {
+        viewModel.fetchData()
     }
 
     private fun setupListener() {

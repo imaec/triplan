@@ -5,20 +5,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.imaec.domain.Result
 import com.imaec.domain.model.PlaceDto
 import com.imaec.domain.model.PlanDto
 import com.imaec.domain.model.SearchParam
 import com.imaec.domain.usecase.place.SearchPlaceListUseCase
 import com.imaec.domain.usecase.plan.SearchPlanListUseCase
+import com.imaec.domain.usecase.recentkeyword.DeleteKeywordUseCase
+import com.imaec.domain.usecase.recentkeyword.GetRecentKeywordListUseCase
+import com.imaec.domain.usecase.recentkeyword.SaveKeywordUseCase
 import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
 import com.imaec.triplan.ext.dateToStringFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+    private val getRecentKeywordListUseCase: GetRecentKeywordListUseCase,
+    private val saveKeywordUseCase: SaveKeywordUseCase,
+    private val deleteKeywordUseCase: DeleteKeywordUseCase,
     private val searchPlanListUseCase: SearchPlanListUseCase,
     private val searchPlaceListUseCase: SearchPlaceListUseCase
 ) : ViewModel() {
@@ -50,10 +58,25 @@ class SearchViewModel @Inject constructor(
         false
     }
 
+    fun fetchData() {
+        viewModelScope.launch {
+            getRecentKeywordListUseCase().collect {
+                when (it) {
+                    is Result.Success -> _recentList.value = it.data ?: emptyList()
+                    Result.Empty -> _recentList.value = emptyList()
+                    else -> {
+                    }
+                }
+            }
+        }
+    }
+
     fun search(keyword: String?) {
         if (keyword.isNullOrBlank()) return
 
         viewModelScope.launch {
+            saveKeywordUseCase(keyword)
+
             val planDeferred = async {
                 searchPlanListUseCase(SearchParam("%$keyword%"))
             }
@@ -78,6 +101,12 @@ class SearchViewModel @Inject constructor(
 
     fun onClickKeyword(keyword: String) {
         search(keyword)
+    }
+
+    fun onClickDeleteKeyword(keyword: String) {
+        viewModelScope.launch {
+            deleteKeywordUseCase(keyword)
+        }
     }
 
     fun onClickPlan(plan: PlanDto) {
