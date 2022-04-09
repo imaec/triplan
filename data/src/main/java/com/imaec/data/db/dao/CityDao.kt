@@ -12,7 +12,7 @@ interface CityDao : BaseDao<CityEntity> {
     fun getCityList(): Flow<List<CityEntity>>
 
     @Query("SELECT * FROM cityEntity WHERE :city = city")
-    fun getCity(city: String): Flow<CityEntity>
+    fun getCity(city: String): Flow<CityEntity?>
 
     @Query("SELECT COUNT(*) FROM cityEntity WHERE :city = city")
     fun getCountByCity(city: String): Int

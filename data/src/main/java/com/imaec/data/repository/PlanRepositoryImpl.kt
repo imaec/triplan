@@ -2,7 +2,7 @@ package com.imaec.data.repository
 
 import android.util.Log
 import com.imaec.data.db.dao.PlanDao
-import com.imaec.data.entity.local.PlanEntity
+import com.imaec.data.entity.local.PlanEntity.Companion.fromDto
 import com.imaec.data.entity.local.PlanEntity.Companion.toDto
 import com.imaec.domain.Result
 import com.imaec.domain.model.PlanDto
@@ -21,7 +21,7 @@ class PlanRepositoryImpl(
 ) : PlanRepository {
 
     override suspend fun addPlan(plan: PlanDto): PlanDto {
-        val entity = PlanEntity.fromDto(plan)
+        val entity = fromDto(plan)
         val result = dao.insert(entity)
         return plan.copy(planId = result)
     }
@@ -43,7 +43,11 @@ class PlanRepositoryImpl(
     override fun getPlan(planId: Long) = flow {
         emit(Result.Loading)
         dao.getPlan(planId).collect {
-            emit(Result.Success(toDto(it)))
+            if (it == null) {
+                emit(Result.Error(Exception("not exist plan")))
+            } else {
+                emit(Result.Success(toDto(it)))
+            }
         }
     }.catch { e ->
         Timber.e("  ## error : ${Log.getStackTraceString(e)}")
@@ -51,10 +55,10 @@ class PlanRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun updatePlan(plan: PlanDto) {
-        dao.update(PlanEntity.fromDto(plan))
+        dao.update(fromDto(plan))
     }
 
     override suspend fun deletePlan(plan: PlanDto) {
-        TODO("Not yet implemented")
+        dao.delete(fromDto(plan))
     }
 }

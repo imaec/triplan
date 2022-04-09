@@ -47,7 +47,11 @@ class CityRepositoryImpl(
     override fun getCity(city: String) = flow {
         emit(Result.Loading)
         dao.getCity(city).collect {
-            emit(Result.Success(toDto(it)))
+            if (it == null) {
+                emit(Result.Error(Exception("not exist city")))
+            } else {
+                emit(Result.Success(toDto(it)))
+            }
         }
     }.catch { e ->
         Result.Error(Exception(e))

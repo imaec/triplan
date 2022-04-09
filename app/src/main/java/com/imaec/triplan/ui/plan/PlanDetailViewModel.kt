@@ -4,17 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.imaec.domain.model.PlanDto
+import com.imaec.domain.usecase.plan.DeletePlanUseCase
 import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
 import com.imaec.triplan.ext.dateToStringFormat
 import com.imaec.triplan.ui.plan.PlanDetailActivity.Companion.PLAN
 import com.imaec.triplan.ui.plan.list.PlanListPageType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PlanDetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val deletePlanUseCase: DeletePlanUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<PlanDetailState>()
@@ -33,6 +37,15 @@ class PlanDetailViewModel @Inject constructor(
             0 -> PlanListPageType.FIRST_PAGE
             plan.planDayList.size - 1 -> PlanListPageType.END_PAGE
             else -> PlanListPageType.MIDDLE_PAGE
+        }
+    }
+
+    fun deletePlan() {
+        plan ?: return
+
+        viewModelScope.launch {
+            deletePlanUseCase(plan)
+            _state.value = PlanDetailState.DeletedPlan
         }
     }
 

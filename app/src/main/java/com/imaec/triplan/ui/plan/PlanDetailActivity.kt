@@ -8,6 +8,7 @@ import com.imaec.domain.model.PlanDto
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.databinding.ActivityPlanDetailBinding
+import com.imaec.triplan.ui.common.CommonDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,7 +50,14 @@ class PlanDetailActivity : BaseActivity<ActivityPlanDetailBinding>(R.layout.acti
             mtbPlanDetail.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_delete -> {
-                        // TODO 일정 삭제 다이얼로그
+                        CommonDialog(
+                            context = this@PlanDetailActivity,
+                            title = "내 일정 삭제",
+                            text = "\"${viewModel.plan?.planName}\"을(를) 삭제하시겠습니까?",
+                            okCallback = {
+                                viewModel.deletePlan()
+                            }
+                        ).show()
                         true
                     }
                     else -> false
@@ -80,6 +88,9 @@ class PlanDetailActivity : BaseActivity<ActivityPlanDetailBinding>(R.layout.acti
                             binding.vpPlanDetail.currentItem + 1,
                             true
                         )
+                    }
+                    PlanDetailState.DeletedPlan -> {
+                        finish()
                     }
                 }
             }

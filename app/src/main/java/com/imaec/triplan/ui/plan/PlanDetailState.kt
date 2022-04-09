@@ -4,4 +4,5 @@ sealed class PlanDetailState {
 
     object OnClickLeft : PlanDetailState()
     object OnClickRight : PlanDetailState()
+    object DeletedPlan : PlanDetailState()
 }
