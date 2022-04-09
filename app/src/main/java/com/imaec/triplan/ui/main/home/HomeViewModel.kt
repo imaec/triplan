@@ -9,6 +9,7 @@ import com.imaec.domain.model.PlanDto
 import com.imaec.domain.usecase.plan.GetPlanListUseCase
 import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
 import com.imaec.triplan.ext.dateToStringFormat
+import com.imaec.triplan.ui.plan.PlanType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -33,9 +34,7 @@ class HomeViewModel @Inject constructor(
             getPlanListUseCase().collect {
                 when (it) {
                     is Result.Success -> {
-                        it.data.sortedBy {
-                            it.startDate
-                        }.groupBy {
+                        it.data.groupBy {
                             val today = LocalDate.now()
                             val startDate = LocalDate.ofEpochDay(it.startDate)
                             val endDate = LocalDate.ofEpochDay(it.endDate)
@@ -44,15 +43,15 @@ class HomeViewModel @Inject constructor(
                                     endDate == today ||
                                     (startDate.isBefore(today) && endDate.isAfter(today)) -> {
                                     // 현재 일정
-                                    HomePlanType.CURRENT
+                                    PlanType.CURRENT
                                 }
                                 startDate.isAfter(today) -> {
                                     // 다가오는 일정
-                                    HomePlanType.UPCOMING
+                                    PlanType.UPCOMING
                                 }
                                 else -> {
-                                    // 다녀온 일정, it.endDate.isAfter(today)
-                                    HomePlanType.PAST
+                                    // 다녀온 일정, it.endDate.isBefore(today)
+                                    PlanType.PAST
                                 }
                             }
                         }.let { result ->
@@ -63,7 +62,16 @@ class HomeViewModel @Inject constructor(
                                 if (tempList.isNotEmpty()) tempList.add(HomeItem.Divider)
                                 result[it]?.let { list ->
                                     if (list.isNotEmpty()) {
-                                        tempList.add(HomeItem.Plan(it, list.take(2)))
+                                        tempList.add(
+                                            HomeItem.Plan(
+                                                it,
+                                                if (it == PlanType.PAST) {
+                                                    list.sortedByDescending { it.startDate }
+                                                } else {
+                                                    list.sortedBy { it.startDate }
+                                                }.take(2)
+                                            )
+                                        )
                                     }
                                 }
                             }
@@ -84,5 +92,9 @@ class HomeViewModel @Inject constructor(
 
     fun onClickPlan(plan: PlanDto) {
         _state.value = HomeState.OnClickPlan(plan)
+    }
+
+    fun onClickMore(planType: PlanType) {
+        _state.value = HomeState.OnClickMore(planType)
     }
 }

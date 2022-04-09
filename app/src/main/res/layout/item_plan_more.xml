@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.plan.more.PlanMoreViewModel" />
+
+        <variable
+            name="item"
+            type="com.imaec.domain.model.PlanDto" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        bindSingleClick="@{() -> vm.onClickPlan(item)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:contentPaddingBottom="8dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/grayEE"
+                app:layout_constraintDimensionRatio="W,1:2.5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/Text14BoldGray33"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="8dp"
+                android:text="@{item.planName}"
+                app:layout_constraintEnd_toStartOf="@id/tv_city"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
+                tools:text="6월 제주 여행" />
+
+            <TextView
+                android:id="@+id/tv_city"
+                style="@style/Text12RegularGray66"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:text="@{item.city}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_name"
+                tools:text="제주" />
+
+            <TextView
+                style="@style/Text11RegularGray99"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="8dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="@{vm.dateToString(item.startDate) + ` ~ ` + vm.dateToString(item.endDate)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
+                tools:text="2022.06.01 ~ 2022.06.05" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

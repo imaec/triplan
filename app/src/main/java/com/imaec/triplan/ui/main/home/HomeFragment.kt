@@ -18,6 +18,8 @@ import com.imaec.triplan.databinding.FragmentHomeBinding
 import com.imaec.triplan.ext.startActivity
 import com.imaec.triplan.ui.calendar.CalendarActivity
 import com.imaec.triplan.ui.plan.PlanDetailActivity
+import com.imaec.triplan.ui.plan.PlanType
+import com.imaec.triplan.ui.plan.more.PlanMoreActivity
 import com.imaec.triplan.ui.select.city.SelectCityActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -113,6 +115,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeState.OnClickPlan -> {
                         startActivity<PlanDetailActivity>(
                             PlanDetailActivity.createBundle(it.plan)
+                        )
+                    }
+                    is HomeState.OnClickMore -> {
+                        startActivity<PlanMoreActivity>(
+                            PlanMoreActivity.createBundle(
+                                title = when (it.planType) {
+                                    PlanType.UPCOMING -> "다가오는 일정 전체보기"
+                                    PlanType.PAST -> "다녀온 일정 전체보기"
+                                    else -> "일정 전체보기"
+                                },
+                                planType = it.planType
+                            )
                         )
                     }
                 }
