@@ -37,6 +37,9 @@ class SearchViewModel @Inject constructor(
     private val _recentList = MutableLiveData<List<String>>(emptyList())
     val recentList: LiveData<List<String>> get() = _recentList
 
+    private val _visibleEmptyRecent = MutableLiveData(false)
+    val visibleEmptyRecent: LiveData<Boolean> get() = _visibleEmptyRecent
+
     private val _searchResultList = MutableLiveData<List<SearchItem>>()
     val searchResultList: LiveData<List<SearchItem>> get() = _searchResultList
 
@@ -62,8 +65,14 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             getRecentKeywordListUseCase().collect {
                 when (it) {
-                    is Result.Success -> _recentList.value = it.data ?: emptyList()
-                    Result.Empty -> _recentList.value = emptyList()
+                    is Result.Success -> {
+                        _recentList.value = it.data ?: emptyList()
+                        _visibleEmptyRecent.value = false
+                    }
+                    Result.Empty -> {
+                        _recentList.value = emptyList()
+                        _visibleEmptyRecent.value = true
+                    }
                     else -> {
                     }
                 }

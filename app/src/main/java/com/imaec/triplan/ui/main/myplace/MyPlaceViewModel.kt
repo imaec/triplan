@@ -25,12 +25,21 @@ class MyPlaceViewModel @Inject constructor(
     private val _placeList = MutableLiveData<List<PlaceDto>>()
     val placeList: LiveData<List<PlaceDto>> get() = _placeList
 
+    private val _visibleEmpty = MutableLiveData(false)
+    val visibleEmpty: LiveData<Boolean> get() = _visibleEmpty
+
     fun fetchData() {
         viewModelScope.launch {
             getPlaceListUseCase().collect {
                 when (it) {
-                    is Result.Success -> _placeList.value = it.data ?: emptyList()
-                    Result.Empty -> _placeList.value = emptyList()
+                    is Result.Success -> {
+                        _placeList.value = it.data ?: emptyList()
+                        _visibleEmpty.value = false
+                    }
+                    Result.Empty -> {
+                        _placeList.value = emptyList()
+                        _visibleEmpty.value = true
+                    }
                     else -> {
                     }
                 }

@@ -23,12 +23,21 @@ class SelectCategoryViewModel @Inject constructor(
     private val _categoryList = MutableLiveData<List<CategoryDto>>()
     val categoryList: LiveData<List<CategoryDto>> get() = _categoryList
 
+    private val _visibleEmpty = MutableLiveData(false)
+    val visibleEmpty: LiveData<Boolean> get() = _visibleEmpty
+
     fun fetchData() {
         viewModelScope.launch {
             getCategoryListUseCase().collect { result ->
                 when (result) {
-                    is Result.Success -> _categoryList.value = result.data ?: emptyList()
-                    Result.Empty -> _categoryList.value = emptyList()
+                    is Result.Success -> {
+                        _categoryList.value = result.data ?: emptyList()
+                        _visibleEmpty.value = false
+                    }
+                    Result.Empty -> {
+                        _categoryList.value = emptyList()
+                        _visibleEmpty.value = true
+                    }
                     else -> {}
                 }
             }

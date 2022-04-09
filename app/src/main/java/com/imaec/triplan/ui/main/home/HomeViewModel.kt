@@ -27,6 +27,9 @@ class HomeViewModel @Inject constructor(
     private val _homeList = MutableLiveData<List<HomeItem>>()
     val homeList: LiveData<List<HomeItem>> get() = _homeList
 
+    private val _visibleEmpty = MutableLiveData(false)
+    val visibleEmpty: LiveData<Boolean> get() = _visibleEmpty
+
     fun getDateString(startDate: Long, endDate: Long): String =
         if (startDate == endDate) {
             startDate.dateToStringFormat(DATE_PATTERN_yyyy_MM_dd_E)
@@ -83,9 +86,13 @@ class HomeViewModel @Inject constructor(
                             }
 
                             _homeList.value = tempList
+                            _visibleEmpty.value = false
                         }
                     }
-                    Result.Empty -> _homeList.value = emptyList()
+                    Result.Empty -> {
+                        _homeList.value = emptyList()
+                        _visibleEmpty.value = true
+                    }
                     else -> {
                     }
                 }
