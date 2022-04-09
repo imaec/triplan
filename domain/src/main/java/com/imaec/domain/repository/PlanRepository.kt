@@ -12,7 +12,7 @@ interface PlanRepository {
 
     fun getPlan(planId: Long): Flow<Result<PlanDto>>
 
-    fun searchPlanList(keyword: String): List<PlanDto>
+    fun searchPlanList(keyword: String, moreResult: Boolean): List<PlanDto>
 
     suspend fun updatePlan(plan: PlanDto)
 

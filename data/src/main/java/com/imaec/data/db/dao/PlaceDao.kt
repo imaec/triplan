@@ -22,7 +22,18 @@ interface PlaceDao : BaseDao<PlaceEntity> {
             "WHERE placeName LIKE :keyword " +
             "OR categoryEntity.category LIKE :keyword " +
             "OR cityEntity.city LIKE :keyword " +
-            "OR address LIKE :keyword LIMIT 4"
+            "OR address LIKE :keyword"
     )
     fun searchPlaceList(keyword: String): List<PlaceEntity>
+
+    @Query(
+        value = "SELECT * FROM placeEntity AS place " +
+            "INNER JOIN categoryEntity ON place.categoryId = categoryEntity.categoryId " +
+            "INNER JOIN cityEntity ON place.cityId = cityEntity.cityId " +
+            "WHERE placeName LIKE :keyword " +
+            "OR categoryEntity.category LIKE :keyword " +
+            "OR cityEntity.city LIKE :keyword " +
+            "OR address LIKE :keyword LIMIT :limit"
+    )
+    fun searchPlaceListLimit(keyword: String, limit: Int): List<PlaceEntity>
 }

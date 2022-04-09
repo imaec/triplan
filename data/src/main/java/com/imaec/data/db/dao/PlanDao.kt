@@ -15,7 +15,13 @@ interface PlanDao : BaseDao<PlanEntity> {
     fun getPlan(planId: Long): Flow<PlanEntity?>
 
     @Query(
-        "SELECT * FROM planEntity WHERE planName LIKE :keyword OR city LIKE :keyword LIMIT 2"
+        "SELECT * FROM planEntity WHERE planName LIKE :keyword OR city LIKE :keyword"
     )
     fun searchPlanList(keyword: String): List<PlanEntity>
+
+    @Query(
+        "SELECT * FROM planEntity WHERE planName LIKE :keyword OR city LIKE :keyword " +
+            "LIMIT :limit"
+    )
+    fun searchPlanListLimit(keyword: String, limit: Int): List<PlanEntity>
 }

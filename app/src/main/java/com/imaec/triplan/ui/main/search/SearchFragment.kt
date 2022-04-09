@@ -99,7 +99,7 @@ class SearchFragment :
                         startActivity<PlanMoreActivity>(
                             PlanMoreActivity.createBundle(
                                 title = "일정 검색 결과",
-                                planList = it.list
+                                keyword = it.keyword
                             )
                         )
                     }

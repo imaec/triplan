@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.model.PlaceDto
 import com.imaec.domain.model.PlanDto
+import com.imaec.domain.model.SearchParam
 import com.imaec.domain.usecase.place.SearchPlaceListUseCase
 import com.imaec.domain.usecase.plan.SearchPlanListUseCase
 import com.imaec.triplan.ext.DATE_PATTERN_yyyy_MM_dd_E
@@ -49,16 +50,13 @@ class SearchViewModel @Inject constructor(
         false
     }
 
-    fun onClickSearch() {
-        val keyword = search.get() ?: ""
-        if (keyword.isEmpty()) return
-
+    private fun search(keyword: String) {
         viewModelScope.launch {
             val planDeferred = async {
-                searchPlanListUseCase("%$keyword%")
+                searchPlanListUseCase(SearchParam("%$keyword%"))
             }
             val placeDeferred = async {
-                searchPlaceListUseCase("%$keyword%")
+                searchPlaceListUseCase(SearchParam("%$keyword%"))
             }
 
             val listPlan = planDeferred.await()
@@ -72,31 +70,23 @@ class SearchViewModel @Inject constructor(
         _state.value = SearchState.OnClickSearch
     }
 
+    fun onClickSearch() {
+        val keyword = search.get() ?: ""
+        if (keyword.isEmpty()) return
+
+        search(keyword)
+    }
+
     fun onClickKeyword(keyword: String) {
-        viewModelScope.launch {
-            val planDeferred = async {
-                searchPlanListUseCase(keyword)
-            }
-            val placeDeferred = async {
-                searchPlaceListUseCase(keyword)
-            }
-
-            val listPlan = planDeferred.await()
-            val listPlace = placeDeferred.await()
-
-            _searchResultList.value = listOf(
-                SearchItem.SearchResultPlan(listPlan),
-                SearchItem.SearchResultPlace(listPlace)
-            )
-        }
+        search(keyword)
     }
 
     fun onClickPlan(plan: PlanDto) {
         _state.value = SearchState.OnClickPlan(plan)
     }
 
-    fun onClickPlanMore(list: List<PlanDto>) {
-        _state.value = SearchState.OnClickPlanMore(list)
+    fun onClickPlanMore() {
+        _state.value = SearchState.OnClickPlanMore(search.get())
     }
 
     fun onClickPlace(place: PlaceDto) {

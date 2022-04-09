@@ -88,22 +88,16 @@ class PlanMoreActivity : BaseActivity<ActivityPlanMoreBinding>(R.layout.activity
     companion object {
         const val TITLE = "title"
         const val PLAN_TYPE = "plan_type"
-        const val PLAN_LIST = "planList"
+        const val KEYWORD = "keyword"
 
         fun createBundle(
             title: String,
-            planType: PlanType
+            planType: PlanType? = null,
+            keyword: String? = null
         ): Bundle = bundleOf(
             TITLE to title,
-            PLAN_TYPE to planType
-        )
-
-        fun createBundle(
-            title: String,
-            planList: List<PlanDto>
-        ): Bundle = bundleOf(
-            TITLE to title,
-            PLAN_LIST to planList
+            PLAN_TYPE to planType,
+            KEYWORD to keyword
         )
     }
 }

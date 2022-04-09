@@ -54,7 +54,9 @@ class PlanRepositoryImpl(
         Result.Error(Exception(e))
     }.flowOn(Dispatchers.IO)
 
-    override fun searchPlanList(keyword: String) = dao.searchPlanList(keyword).map(::toDto)
+    override fun searchPlanList(keyword: String, moreResult: Boolean) =
+        if (moreResult) dao.searchPlanList(keyword).map(::toDto)
+        else dao.searchPlanListLimit(keyword, 2).map(::toDto)
 
     override suspend fun updatePlan(plan: PlanDto) {
         dao.update(fromDto(plan))

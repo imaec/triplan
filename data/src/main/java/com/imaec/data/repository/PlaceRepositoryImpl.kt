@@ -31,7 +31,9 @@ class PlaceRepositoryImpl(
         Result.Error(Exception(e))
     }.flowOn(Dispatchers.IO)
 
-    override fun searchPlaceList(keyword: String) = dao.searchPlaceList(keyword).map(::toDto)
+    override fun searchPlaceList(keyword: String, moreResult: Boolean) =
+        if (moreResult) dao.searchPlaceList(keyword).map(::toDto)
+        else dao.searchPlaceListLimit(keyword, 4).map(::toDto)
 
     override suspend fun savePlace(place: PlaceDto): PlaceDto {
         val entity = PlaceEntity(
