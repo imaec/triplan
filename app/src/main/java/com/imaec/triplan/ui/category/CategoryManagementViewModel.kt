@@ -11,6 +11,7 @@ import com.imaec.domain.usecase.category.AddCategoryUseCase
 import com.imaec.domain.usecase.category.DeleteCategoryUseCase
 import com.imaec.domain.usecase.category.GetCategoryListUseCase
 import com.imaec.domain.usecase.category.UpdateCategoryUseCase
+import com.imaec.domain.usecase.place.GetPlaceCountByCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -21,7 +22,8 @@ class CategoryManagementViewModel @Inject constructor(
     private val addCategoryUseCase: AddCategoryUseCase,
     private val getCategoryListUseCase: GetCategoryListUseCase,
     private val updateCategoryUseCase: UpdateCategoryUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val getPlaceCountByCategoryUseCase: GetPlaceCountByCategoryUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<CategoryManagementState>()
@@ -80,6 +82,10 @@ class CategoryManagementViewModel @Inject constructor(
 
     fun onClickDelete(category: CategoryDto) {
         viewModelScope.launch {
+            if (getPlaceCountByCategoryUseCase(category.category) > 0) {
+                _state.value = CategoryManagementState.OnError("카테고리를 사용하고있는 장소가 있습니다.")
+                return@launch
+            }
             deleteCategoryUseCase(category)
         }
     }

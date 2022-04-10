@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import java.lang.Exception
 
 class PlaceRepositoryImpl(
@@ -30,6 +29,11 @@ class PlaceRepositoryImpl(
     }.catch { e ->
         Result.Error(Exception(e))
     }.flowOn(Dispatchers.IO)
+
+    override fun getPlaceCountByCategory(category: String): Int =
+        dao.getPlaceCountByCategory(category)
+
+    override fun getPlaceCountByCity(city: String): Int = dao.getPlaceCountByCity(city)
 
     override fun searchPlaceList(keyword: String, moreResult: Boolean) =
         if (moreResult) dao.searchPlaceList(keyword).map(::toDto)

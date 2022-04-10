@@ -10,6 +10,7 @@ import com.imaec.domain.model.CityDto
 import com.imaec.domain.usecase.city.AddCityUseCase
 import com.imaec.domain.usecase.city.DeleteCityUseCase
 import com.imaec.domain.usecase.city.GetCityListUseCase
+import com.imaec.domain.usecase.place.GetPlaceCountByCityUseCase
 import com.imaec.domain.usecase.city.UpdateCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -21,7 +22,8 @@ class CityManagementViewModel @Inject constructor(
     private val addCityUseCase: AddCityUseCase,
     private val getCityListUseCase: GetCityListUseCase,
     private val updateCityUseCase: UpdateCityUseCase,
-    private val deleteCityUseCase: DeleteCityUseCase
+    private val deleteCityUseCase: DeleteCityUseCase,
+    private val getPlaceCountByCityUseCase: GetPlaceCountByCityUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<CityManagementState>()
@@ -80,6 +82,10 @@ class CityManagementViewModel @Inject constructor(
 
     fun onClickDelete(city: CityDto) {
         viewModelScope.launch {
+            if (getPlaceCountByCityUseCase(city.city) > 0) {
+                _state.value = CityManagementState.OnError("지역을 사용하고있는 장소가 있습니다.")
+                return@launch
+            }
             deleteCityUseCase(city)
         }
     }

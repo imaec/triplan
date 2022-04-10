@@ -16,6 +16,22 @@ interface PlaceDao : BaseDao<PlaceEntity> {
     fun getPlaceList(): Flow<List<PlaceEntity>>
 
     @Query(
+        value = "SELECT COUNT(*) FROM placeEntity AS place " +
+            "INNER JOIN categoryEntity ON place.categoryId = categoryEntity.categoryId " +
+            "INNER JOIN cityEntity ON place.cityId = cityEntity.cityId " +
+            "WHERE categoryEntity.category = :category"
+    )
+    fun getPlaceCountByCategory(category: String): Int
+
+    @Query(
+        value = "SELECT COUNT(*) FROM placeEntity AS place " +
+            "INNER JOIN categoryEntity ON place.categoryId = categoryEntity.categoryId " +
+            "INNER JOIN cityEntity ON place.cityId = cityEntity.cityId " +
+            "WHERE cityEntity.city = :city"
+    )
+    fun getPlaceCountByCity(city: String): Int
+
+    @Query(
         value = "SELECT * FROM placeEntity AS place " +
             "INNER JOIN categoryEntity ON place.categoryId = categoryEntity.categoryId " +
             "INNER JOIN cityEntity ON place.cityId = cityEntity.cityId " +

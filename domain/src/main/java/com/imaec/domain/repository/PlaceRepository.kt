@@ -8,6 +8,10 @@ interface PlaceRepository {
 
     fun getPlaceList(): Flow<Result<List<PlaceDto>>>
 
+    fun getPlaceCountByCategory(category: String): Int
+
+    fun getPlaceCountByCity(city: String): Int
+
     fun searchPlaceList(keyword: String, moreResult: Boolean): List<PlaceDto>
 
     suspend fun savePlace(place: PlaceDto): PlaceDto
