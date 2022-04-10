@@ -11,6 +11,7 @@ import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.base.BaseListAdapter
 import com.imaec.triplan.databinding.ActivitySelectCategoryBinding
+import com.imaec.triplan.ui.common.InputDialog
 import com.imaec.triplan.ui.common.RecyclerViewDividerDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -86,6 +87,16 @@ class SelectCategoryActivity :
                             }
                         )
                         finish()
+                    }
+                    SelectCategoryState.OnClickAddCategory -> {
+                        InputDialog(
+                            context = this@SelectCategoryActivity,
+                            title = "카테고리 추가",
+                            hint = "카테고리를 입력하세요.",
+                            okCallback = { category ->
+                                viewModel.saveCategory(category)
+                            }
+                        ).show()
                     }
                 }
             }

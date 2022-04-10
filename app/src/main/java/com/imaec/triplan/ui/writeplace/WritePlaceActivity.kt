@@ -67,8 +67,8 @@ class WritePlaceActivity : BaseActivity<ActivityWritePlaceBinding>(R.layout.acti
                             context = this@WritePlaceActivity,
                             title = "카테고리 추가",
                             hint = "카테고리를 입력하세요.",
-                            okCallback = { city ->
-                                viewModel.saveCategory(city)
+                            okCallback = { category ->
+                                viewModel.saveCategory(category)
                             }
                         ).show()
                     }

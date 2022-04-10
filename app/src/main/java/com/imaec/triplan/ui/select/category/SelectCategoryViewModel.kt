@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imaec.domain.Result
 import com.imaec.domain.model.CategoryDto
+import com.imaec.domain.usecase.category.AddCategoryUseCase
 import com.imaec.domain.usecase.category.GetCategoryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectCategoryViewModel @Inject constructor(
-    private val getCategoryListUseCase: GetCategoryListUseCase
+    private val getCategoryListUseCase: GetCategoryListUseCase,
+    private val addCategoryUseCase: AddCategoryUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<SelectCategoryState>()
@@ -44,7 +46,17 @@ class SelectCategoryViewModel @Inject constructor(
         }
     }
 
+    fun saveCategory(category: String) {
+        viewModelScope.launch {
+            addCategoryUseCase(category)
+        }
+    }
+
     fun onClickCategory(category: CategoryDto) {
         _state.value = SelectCategoryState.OnClickCategory(category)
+    }
+
+    fun onClickAddCategory() {
+        _state.value = SelectCategoryState.OnClickAddCategory
     }
 }
