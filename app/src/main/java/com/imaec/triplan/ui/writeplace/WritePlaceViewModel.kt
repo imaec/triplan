@@ -158,7 +158,7 @@ class WritePlaceViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            val place = PlaceDto(
+            var place = PlaceDto(
                 placeId = place?.placeId ?: -1,
                 categoryId = category.value?.categoryId ?: -1,
                 category = category.value?.category ?: "",
@@ -168,11 +168,11 @@ class WritePlaceViewModel @Inject constructor(
                 address = address.value ?: "",
                 siteUrl = site.value ?: ""
             )
-            when (type) {
+            place = when (type) {
                 WritePlaceType.WRITE -> savePlaceUseCase(place)
                 WritePlaceType.EDIT -> editPlaceUseCase(place)
             }
-            _state.value = WritePlaceState.OnSuccess
+            _state.value = WritePlaceState.OnSuccess(place)
         }
     }
 

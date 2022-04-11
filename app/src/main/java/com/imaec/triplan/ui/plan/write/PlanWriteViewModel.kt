@@ -1,29 +1,24 @@
 package com.imaec.triplan.ui.plan.write
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.imaec.domain.Result
-import com.imaec.domain.model.NaverPlaceDto
+import com.imaec.domain.model.PlaceDto
 import com.imaec.domain.model.PlanDto
 import com.imaec.domain.model.PlanItemDto
-import com.imaec.domain.usecase.naverplace.GetNaverPlaceUseCase
 import com.imaec.domain.usecase.plan.UpdatePlanUseCase
 import com.imaec.triplan.ui.plan.write.PlanWriteActivity.Companion.PLAN
 import com.imaec.triplan.ui.plan.write.PlanWriteActivity.Companion.PLAN_DAY
 import com.imaec.triplan.ui.plan.write.PlanWriteActivity.Companion.PLAN_ITEM
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PlanWriteViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getNaverPlaceUseCase: GetNaverPlaceUseCase,
     private val updatePlanUseCase: UpdatePlanUseCase
 ) : ViewModel() {
 
@@ -49,8 +44,6 @@ class PlanWriteViewModel @Inject constructor(
 
     val planDay = savedStateHandle.get<Int>(PLAN_DAY) ?: 1
 
-    val placeName = ObservableField(planItem.value?.placeName ?: "")
-
     fun setCategory(category: String) {
         _planItem.value = planItem.value?.copy(category = category)
     }
@@ -73,11 +66,12 @@ class PlanWriteViewModel @Inject constructor(
         _planItem.value = planItem.value?.copy(address = address)
     }
 
-    fun setPlace(naverPlace: NaverPlaceDto) {
-        placeName.set(naverPlace.title)
+    fun setPlace(place: PlaceDto) {
         _planItem.value = planItem.value?.copy(
-            placeName = naverPlace.title,
-            address = naverPlace.roadAddress ?: naverPlace.address ?: ""
+            placeName = place.placeName,
+            city = place.city,
+            category = place.category,
+            address = place.address
         )
     }
 
@@ -97,23 +91,12 @@ class PlanWriteViewModel @Inject constructor(
         _state.value = PlanWriteState.OnClickAddCity
     }
 
-    fun onClickSearchPlace() {
-        val keyword = placeName.get() ?: ""
-        if (keyword.length <= 1) {
-            _state.value = PlanWriteState.OnError("검색 할 장소를 2글자 이상 입력해주세요.")
-            return
-        }
+    fun onClickPlace() {
+        _state.value = PlanWriteState.OnClickPlace
+    }
 
-        viewModelScope.launch {
-            getNaverPlaceUseCase(keyword).collect {
-                when (it) {
-                    is Result.Success -> {
-                        _state.value = PlanWriteState.OnLoadNaverPlace(it.data)
-                    }
-                    else -> {}
-                }
-            }
-        }
+    fun onClickAddPlace() {
+        _state.value = PlanWriteState.OnClickAddPlace
     }
 
     fun onClickAddress() {

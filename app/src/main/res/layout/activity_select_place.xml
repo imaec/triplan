@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.imaec.triplan.ui.select.place.SelectPlaceViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mtb_select_place"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationIconTint="@color/black"
+            app:title="내 장소 선택"
+            app:titleTextAppearance="@style/Text20BoldBlack"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            bindVisible="@{vm.visibleEmpty}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tv_empty,bt_add_place"/>
+
+        <TextView
+            android:id="@+id/tv_empty"
+            style="@style/Text16RegularGray33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal"
+            android:text="카테고리가 없습니다.\n카테고리를 추가해 주세요."
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mtb_select_place"/>
+
+        <Button
+            android:id="@+id/bt_add_place"
+            style="@style/Text16RegularWhite"
+            bindSingleClick="@{() -> vm.onClickAddPlace()}"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:background="@drawable/bg_sr_sky_all10"
+            android:shadowColor="@color/grayCC"
+            android:text="내 장소 추가하기"
+            app:layout_constraintStart_toStartOf="@id/tv_empty"
+            app:layout_constraintEnd_toEndOf="@id/tv_empty"
+            app:layout_constraintTop_toBottomOf="@id/tv_empty"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_select_place"
+            bindItemList="@{vm.placeList}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintTop_toBottomOf="@id/mtb_select_place"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_select_place"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

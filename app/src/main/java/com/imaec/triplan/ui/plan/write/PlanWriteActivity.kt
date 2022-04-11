@@ -5,21 +5,20 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
-import androidx.core.text.HtmlCompat
 import com.imaec.domain.model.CategoryDto
 import com.imaec.domain.model.CityDto
-import com.imaec.domain.model.NaverPlaceDto
+import com.imaec.domain.model.PlaceDto
 import com.imaec.domain.model.PlanDto
 import com.imaec.domain.model.PlanItemDto
 import com.imaec.triplan.R
 import com.imaec.triplan.base.BaseActivity
 import com.imaec.triplan.databinding.ActivityPlanWriteBinding
 import com.imaec.triplan.ext.toast
-import com.imaec.triplan.ui.common.CommonBottomListener
 import com.imaec.triplan.ui.common.InputDialog
 import com.imaec.triplan.ui.select.category.SelectCategoryActivity
 import com.imaec.triplan.ui.select.city.SelectCityActivity
-import com.imaec.triplan.ui.select.naverplace.SelectNaverPlaceBottomSheet
+import com.imaec.triplan.ui.select.place.SelectPlaceActivity
+import com.imaec.triplan.ui.writeplace.WritePlaceActivity
 import com.imaec.triplan.ui.writeplace.searchaddress.SearchAddressActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -94,6 +93,28 @@ class PlanWriteActivity : BaseActivity<ActivityPlanWriteBinding>(R.layout.activi
                             }
                         ).show()
                     }
+                    PlanWriteState.OnClickPlace -> {
+                        startActivityForResult(
+                            key = SelectPlaceActivity.SELECT_PLACE,
+                            activity = SelectPlaceActivity::class.java,
+                            onResultOk = {
+                                it.getSerializableExtra(SelectPlaceActivity.PLACE)?.let {
+                                    viewModel.setPlace(it as PlaceDto)
+                                }
+                            }
+                        )
+                    }
+                    PlanWriteState.OnClickAddPlace -> {
+                        startActivityForResult(
+                            key = WritePlaceActivity.WRITE_PLACE,
+                            activity = WritePlaceActivity::class.java,
+                            onResultOk = {
+                                it.getSerializableExtra(WritePlaceActivity.PLACE)?.let {
+                                    viewModel.setPlace(it as PlaceDto)
+                                }
+                            }
+                        )
+                    }
                     PlanWriteState.OnClickAddress -> {
                         startActivityForResult(
                             key = SearchAddressActivity.SEARCH_ADDRESS,
@@ -104,24 +125,6 @@ class PlanWriteActivity : BaseActivity<ActivityPlanWriteBinding>(R.layout.activi
                             onResultOk = {
                                 it.getStringExtra(SearchAddressActivity.ADDRESS)?.let {
                                     viewModel.setAddress(it)
-                                }
-                            }
-                        )
-                    }
-                    is PlanWriteState.OnLoadNaverPlace -> {
-                        SelectNaverPlaceBottomSheet.instance(
-                            manager = supportFragmentManager,
-                            list = it.list,
-                            listener = object : CommonBottomListener<NaverPlaceDto> {
-                                override fun onBottomSelected(data: NaverPlaceDto) {
-                                    viewModel.setPlace(
-                                        data.copy(
-                                            title = HtmlCompat.fromHtml(
-                                                data.title,
-                                                HtmlCompat.FROM_HTML_MODE_LEGACY
-                                            ).toString()
-                                        )
-                                    )
                                 }
                             }
                         )

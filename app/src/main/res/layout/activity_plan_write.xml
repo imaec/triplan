@@ -115,33 +115,32 @@
                     android:text="장소 이름"
                     app:layout_constraintTop_toBottomOf="@id/tv_city"/>
 
-                <EditText
+                <TextView
                     style="@style/Text14RegularGray66"
-                    android:id="@+id/et_place"
+                    bindSingleClick="@{() -> vm.onClickPlace()}"
+                    android:id="@+id/tv_place"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:minHeight="40dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:background="@drawable/bg_sr_white_graycc_all4"
-                    android:hint="장소 이름을 입력해주세요."
-                    android:singleLine="true"
-                    android:imeOptions="actionSearch"
-                    android:text="@={vm.placeName}"
+                    android:text="@{vm.planItem.placeName}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/iv_place_search"
+                    app:layout_constraintEnd_toStartOf="@id/iv_place_add"
                     app:layout_constraintTop_toBottomOf="@id/tv_place_title"/>
 
                 <ImageView
-                    android:id="@+id/iv_place_search"
-                    bindSingleClick="@{() -> vm.onClickSearchPlace()}"
+                    android:id="@+id/iv_place_add"
+                    bindSingleClick="@{() -> vm.onClickAddPlace()}"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="8dp"
-                    android:src="@drawable/ic_search"
+                    android:src="@drawable/ic_add"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/et_place"
-                    app:layout_constraintTop_toTopOf="@id/et_place"/>
+                    app:layout_constraintStart_toEndOf="@id/tv_place"
+                    app:layout_constraintTop_toTopOf="@id/tv_place"/>
 
                 <TextView
                     style="@style/Text14BoldGray33"
@@ -150,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="주소"
-                    app:layout_constraintTop_toBottomOf="@id/et_place"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_place"/>
 
                 <TextView
                     style="@style/Text14RegularGray66"
