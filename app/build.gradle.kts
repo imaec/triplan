@@ -16,7 +16,7 @@ android {
         versionCode = Apps.versionCode
         versionName = Apps.versionName
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.imaec.triplan.DexOpeningTestRunner"
         multiDexEnabled = true
     }
     buildTypes {
@@ -35,6 +35,23 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    packagingOptions {
+        resources {
+            excludes.add("META-INF/LICENSE*")
+            excludes.add("META-INF/AL2.0")
+            excludes.add("META-INF/LGPL2.1")
+            excludes.add("META-INF/licenses/**")
+            pickFirsts.add("win32-x86-64/attach_hotspot_windows.dll")
+            pickFirsts.add("win32-x86/attach_hotspot_windows.dll")
+        }
+    }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+        unitTests.isIncludeAndroidResources = true
+        animationsDisabled = true
     }
 
     compileOptions {
@@ -64,6 +81,23 @@ dependencies {
     testImplementation(TestLibs.junit)
     androidTestImplementation(TestLibs.junit_ext)
     androidTestImplementation(TestLibs.espresso)
+    androidTestImplementation(Libs.aac_core)
+    testImplementation(Libs.aac_core)
+    testImplementation(Libs.JUPITER_API)
+    testImplementation(Libs.JUPITER_ENGINE)
+    testImplementation(Libs.JUPITER_PARAMS)
+    testImplementation(Libs.MOCKK)
+    testImplementation(Libs.MOCKK_COMMON)
+    androidTestImplementation(Libs.COROUTINE_TEST)
+    androidTestImplementation(Libs.MOCKK_ANDROID)
+    androidTestImplementation(Libs.ESPRESSO_CORE)
+    androidTestImplementation(Libs.ESPRESSO_CONTRIB)
+    androidTestImplementation(Libs.ESPRESSO_INTENTS)
+    androidTestImplementation(Libs.ESPRESSO_MOCK_WEBSERVER_IDLING_RESOURCE)
+    androidTestImplementation(Libs.TEST_RUNNER)
+    androidTestImplementation(Libs.TEST_RULES)
+    androidTestImplementation(Libs.MOCK_WEBSERVER)
+    androidTestImplementation(Libs.DEX_OPENER)
 
     implementation(Libs.kotlin)
     implementation(Libs.appcompat)
@@ -72,6 +106,7 @@ dependencies {
     implementation(Libs.constraint_layout)
     implementation(Libs.activity_ktx)
     implementation(Libs.fragment_ktx)
+    implementation(Libs.FRAGMENT_TESTING)
 
     implementation(Libs.lifecycle_viewmodel_ktx)
     implementation(Libs.lifecycle_livedata_ktx)
@@ -82,8 +117,11 @@ dependencies {
 
     implementation(Libs.dagger_hilt_android)
     kapt(Libs.dagger_hilt_compiler)
+    androidTestImplementation(Libs.dagger_hilt_testing)
     implementation(Libs.hilt_common)
     kapt(Libs.hilt_compiler)
+    androidTestImplementation(Libs.hilt_testing)
+    kaptAndroidTest(Libs.hilt_testing_compiler)
 
     implementation(Libs.retrofit)
     implementation(Libs.retrofit_converter)

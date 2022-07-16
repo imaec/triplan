@@ -48,6 +48,19 @@ object Versions {
     const val jsoup = "1.11.3"
     const val calendar = "1.0.4"
     const val timber = "4.7.1"
+
+    const val aac_core = "2.1.0"
+    const val junit5_version = "5.4.0"
+    const val mockk = "1.12.0"
+    const val coroutinesTest = "1.5.2"
+    const val espresso_core = "3.3.0-rc03"
+    const val espresso_intents = "3.1.0"
+    const val espresso_webserver_idling_resource = "1.0.0"
+    const val test_runner = "1.4.0"
+    const val test_rules = "1.1.1"
+    const val mock_webserver = "4.9.3"
+    const val fragment_test = "1.4.0-alpha03"
+    const val dex_opener = "2.0.5"
 }
 
 object Libs {
@@ -70,8 +83,11 @@ object Libs {
     // Hilt
     const val dagger_hilt_android = "com.google.dagger:hilt-android:${Versions.dagger_hilt}"
     const val dagger_hilt_compiler = "com.google.dagger:hilt-android-compiler:${Versions.dagger_hilt}"
+    const val dagger_hilt_testing = "com.google.dagger:hilt-android-testing:${Versions.dagger_hilt}"
     const val hilt_common = "androidx.hilt:hilt-common:${Versions.hilt}"
     const val hilt_compiler = "androidx.hilt:hilt-compiler:${Versions.hilt}"
+    const val hilt_testing = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
+    const val hilt_testing_compiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
     // Retrofit
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     const val retrofit_converter = "com.squareup.retrofit2:converter-jackson:${Versions.retrofit}"
@@ -89,6 +105,25 @@ object Libs {
     const val calendar = "com.github.kizitonwose:CalendarView:${Versions.calendar}"
     // Timber
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
+    // Testing
+    const val aac_core = "androidx.arch.core:core-testing:${Versions.aac_core}"
+    const val JUPITER_API = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5_version}"
+    const val JUPITER_ENGINE = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit5_version}"
+    const val JUPITER_PARAMS = "org.junit.jupiter:junit-jupiter-params:${Versions.junit5_version}"
+    const val MOCKK = "io.mockk:mockk:${Versions.mockk}"
+    const val MOCKK_ANDROID = "io.mockk:mockk-android:${Versions.mockk}"
+    const val MOCKK_COMMON = "io.mockk:mockk-common:${Versions.mockk}"
+    const val COROUTINE_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
+    const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core:${Versions.espresso_core}"
+    const val ESPRESSO_CONTRIB = "androidx.test.espresso:espresso-contrib:${Versions.espresso_core}"
+    const val ESPRESSO_INTENTS = "androidx.test.espresso:espresso-intents:${Versions.espresso_intents}"
+    const val ESPRESSO_MOCK_WEBSERVER_IDLING_RESOURCE =
+        "com.jakewharton.espresso:okhttp3-idling-resource:${Versions.espresso_webserver_idling_resource}"
+    const val TEST_RUNNER = "androidx.test:runner:${Versions.test_runner}"
+    const val TEST_RULES = "androidx.test:rules:${Versions.test_rules}"
+    const val MOCK_WEBSERVER = "com.squareup.okhttp3:mockwebserver:${Versions.mock_webserver}"
+    const val FRAGMENT_TESTING = "androidx.fragment:fragment-testing:${Versions.fragment_test}"
+    const val DEX_OPENER = "com.github.tmurakami:dexopener:${Versions.dex_opener}"
 }
 
 object TestLibs {
